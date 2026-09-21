@@ -93,4 +93,48 @@ module.exports = {
       WT: ["Upskilling SDM manajemen & pemasaran", "Manfaatkan marketplace + promosi media sosial"]
     }
   }
-};
+  
+  "company": {
+    "name": "PT Madubaru — PG Madukismo",
+    "location": "Bantul, D.I. Yogyakarta",
+    "founded": 1955,
+    "yield": 7,
+    "outlets": 247,
+    "employees": 4340,
+    "areaHa": 27
+  },
+  "nationalSugar": {
+    "years": ["2014", "2015", "2025"],
+    "consumption": [3476550, 3313642, 7512726],
+    "domesticProduction": [null, null, 2670000],
+    "deficit2025": 4830000
+  },
+  "hayami": {
+    "stage1": {
+      "output": 250000,
+      "input": 3500000,
+      "labor": 1279,
+      "wage": 100000,
+      "rawPrice": 684.18,
+      "otherInput": 85.71,
+      "outputPrice": 14513
+    },
+    "stage2": {
+      "output": 1408,
+      "input": 1408,
+      "labor": 10,
+      "wage": 100000,
+      "rawPrice": 14513,
+      "otherInput": 500,
+      "outputPrice": 16654
+    }
+  },
+  "revenue": {
+    "bulk": 278700790200,
+    "retail": 1810342500
+  },
+  "distribution": {
+    "regions": ["DIY & Jawa Tengah", "DKI & Jawa Barat", "Jawa Timur"],
+    "outlets": [241, 4, 2]
+  }
+}
