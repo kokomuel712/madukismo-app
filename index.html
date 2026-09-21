@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manajemen Pemasaran Gula Pasir Madukismo — PT Madubaru</title>
+<!-- Chart.js & Fonts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --red:#EF4136;
+    --red-dark:#D7301F;
+    --ink:#2F3142;
+    --ink-light:#3F4259;
+    --grey:#6B7280;
+    --bg:#F4F6F9;
+    --card:#FFFFFF;
+    --border:#E5E7EB;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
+  body{background:var(--bg);color:var(--ink);scroll-behavior:smooth;overflow-x:hidden;}
+
+  /* NAV */
+  nav{position:fixed;top:0;width:100%;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);
+      box-shadow:0 2px 20px rgba(0,0,0,.06);z-index:100;display:flex;justify-content:space-between;
+      align-items:center;padding:12px 36px;}
+  .brand{font-weight:900;font-size:16px;letter-spacing:-.3px;}.brand span{color:var(--red);}
+  nav ul{display:flex;gap:14px;list-style:none;align-items:center;}
+  nav a{text-decoration:none;color:var(--grey);font-weight:700;font-size:12.5px;transition:.2s;}
+  nav a:hover{color:var(--red);}
+
+  /* TOMBOL MODE PRESENTASI */
+  .btn-present{
+    background:linear-gradient(135deg, var(--red), var(--red-dark));
+    color:#fff !important;padding:7px 16px;border-radius:30px;font-weight:800;
+    font-size:11.5px;letter-spacing:.05em;border:none;cursor:pointer;
+    display:flex;align-items:center;gap:6px;box-shadow:0 4px 14px rgba(239,65,54,.35);
+    transition:all .25s ease;
+  }
+  .btn-present:hover{transform:scale(1.04);box-shadow:0 6px 20px rgba(239,65,54,.5);}
+
+  /* SLIDE SECTIONS */
+  .slide-section{min-height:100vh;padding:90px 40px 60px;max-width:1200px;margin:0 auto;display:flex;flex-direction:column;justify-content:center;}
+  .eyebrow{color:var(--red);font-weight:800;letter-spacing:.2em;font-size:11.5px;text-transform:uppercase;margin-bottom:4px;}
+  h2{font-size:30px;font-weight:900;margin-bottom:4px;letter-spacing:-.5px;color:var(--ink);}
+  h2 span{color:var(--red);}
+  .sub{color:var(--grey);margin-bottom:24px;font-size:14.5px;line-height:1.5;}
+
+  /* HERO */
+  .hero{background:linear-gradient(135deg,#fff 0%,#FFF0EF 100%);position:relative;overflow:hidden;max-width:none;width:100%;}
+  .hero-inner{max-width:1200px;margin:0 auto;padding:0 40px;}
+  .hero h1{font-size:44px;font-weight:900;line-height:1.15;margin:14px 0;max-width:880px;letter-spacing:-1px;}
+  .hero h1 span{color:var(--red);}
+  .hero p{max-width:720px;color:var(--grey);font-size:15.5px;line-height:1.6;}
+  .hero-author{margin-top:20px;display:flex;gap:20px;font-size:13px;color:var(--ink);font-weight:600;}
+  .hero-author div span{color:var(--grey);display:block;font-size:11px;text-transform:uppercase;letter-spacing:.05em;}
+  .stats{display:flex;gap:32px;margin-top:32px;}
+  .stat b{font-size:32px;font-weight:900;color:var(--red);display:block;}
+  .stat small{color:var(--grey);font-weight:700;}
+
+  /* GRIDS & CARDS */
+  .grid{display:grid;gap:16px;}
+  .g3{grid-template-columns:repeat(3,1fr);}
+  .g2{grid-template-columns:repeat(2,1fr);}
+  .g4{grid-template-columns:repeat(4,1fr);}
+  
+  .card{background:var(--card);border-radius:12px;padding:20px;box-shadow:0 6px 20px rgba(20,25,45,.04);
+        border:1px solid var(--border);transition:.25s;}
+  .card:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(20,25,45,.08);}
+  .card .tag{font-size:10.5px;font-weight:800;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;}
+  .card h3{font-size:16px;font-weight:800;margin:4px 0 6px;color:var(--ink);}
+  .card p{font-size:12.5px;color:var(--grey);line-height:1.55;}
+  .card ul{margin-left:16px;font-size:12px;color:var(--grey);line-height:1.5;margin-top:6px;}
+
+  .chartbox{background:var(--card);border-radius:12px;padding:20px;box-shadow:0 6px 20px rgba(20,25,45,.04);border:1px solid var(--border);}
+
+  /* TIMELINE TABLE (BAB III) */
+  .timeline-table{width:100%;border-collapse:collapse;margin-top:12px;background:#fff;border-radius:10px;overflow:hidden;font-size:12.5px;}
+  .timeline-table th,.timeline-table td{padding:10px 14px;border:1px solid #E5E7EB;text-align:left;}
+  .timeline-table th{background:var(--ink);color:#fff;font-weight:700;font-size:12px;}
+  .timeline-table td.center{text-align:center;}
+  .badge-week{background:var(--red);color:#fff;padding:2px 8px;border-radius:12px;font-size:10.5px;font-weight:700;}
+
+  /* FLOW PROCESS */
+  .flow-grid{display:grid;grid-template-columns:repeat(7, 1fr);gap:8px;margin-top:14px;}
+  .flow-step{background:#fff;border:1px solid #E5E7EB;border-radius:8px;padding:12px 8px;text-align:center;box-shadow:0 4px 10px rgba(0,0,0,.03);}
+  .flow-step b{display:block;color:var(--red);font-size:11px;font-weight:900;margin-bottom:4px;}
+  .flow-step p{font-size:11px;color:var(--ink);font-weight:700;line-height:1.3;}
+  .flow-step small{display:block;font-size:9.5px;color:var(--grey);margin-top:4px;}
+
+  /* SWOT */
+  .swot{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .swot .box{border-radius:10px;padding:18px;color:#fff;}
+  .swot .s{background:linear-gradient(135deg,#22A06B,#178a58);}
+  .swot .w{background:linear-gradient(135deg,#E8A317,#c98a0d);}
+  .swot .o{background:linear-gradient(135deg,#2D7FF9,#1c63d1);}
+  .swot .t{background:linear-gradient(135deg,#EF4136,#c92f24);}
+  .swot h4{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;opacity:.95;}
+  .swot ul{list-style:none;display:flex;flex-direction:column;gap:5px;}
+  .swot li{font-size:12px;line-height:1.4;padding-left:14px;position:relative;}
+  .swot li::before{content:"▸";position:absolute;left:0;}
+
+  .matrix-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px;}
+  .m-box{background:#fff;border:1px solid #E5E7EB;border-radius:10px;padding:14px;}
+  .m-box h5{font-size:11.5px;font-weight:800;color:var(--red);margin-bottom:4px;text-transform:uppercase;}
+  .m-box ul{list-style:disc;margin-left:14px;font-size:11.5px;color:var(--grey);line-height:1.45;}
+
+  /* CALCULATOR */
+  .calc{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}
+  .calc-preset-bar{display:flex;gap:8px;margin-bottom:12px;}
+  .btn-preset{flex:1;background:#F0F2F6;border:1px solid #DDE0E6;padding:7px 10px;border-radius:8px;font-weight:700;font-size:11.5px;cursor:pointer;transition:.2s;}
+  .btn-preset:hover{background:#E2E5EC;}
+  .btn-preset.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+
+  .calc input{width:100%;padding:8px 10px;border:1px solid #DDE0E6;border-radius:6px;margin-top:2px;font-size:12.5px;}
+  .calc label{font-size:11px;font-weight:700;color:var(--grey);display:block;margin-top:8px;}
+  .calc button.btn-calc{margin-top:14px;background:var(--red);color:#fff;border:none;padding:10px 20px;border-radius:6px;
+        font-weight:800;cursor:pointer;font-size:13px;transition:.2s;width:100%;}
+  .calc button.btn-calc:hover{background:var(--red-dark);}
+  .result{background:var(--ink);color:#fff;border-radius:12px;padding:20px;}
+  .result .row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.10);font-size:12.5px;}
+  .result .row b{color:#FF8C7F;}
+  .result .big{font-size:26px;font-weight:900;color:#fff;margin:8px 0;}
+
+  /* FLOATING PRESENTER HUD */
+  #presenterHUD{
+    position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(120px);
+    background:rgba(47,49,66,0.95);backdrop-filter:blur(16px);
+    color:#fff;padding:8px 20px;border-radius:50px;
+    display:flex;align-items:center;gap:16px;z-index:999;
+    box-shadow:0 12px 36px rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.15);
+    transition:transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  #presenterHUD.active{transform:translateX(-50%) translateY(0);}
+  
+  .hud-btn{
+    background:rgba(255,255,255,0.12);color:#fff;border:none;width:34px;height:34px;
+    border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    font-size:14px;font-weight:900;transition:.2s;
+  }
+  .hud-btn:hover{background:var(--red);transform:scale(1.1);}
+  
+  .hud-timer{
+    font-family:monospace;font-size:13.5px;font-weight:800;
+    background:rgba(0,0,0,0.35);padding:4px 10px 4px 6px;border-radius:20px;
+    display:flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,0.12);
+  }
+  .hud-timer.running #timerText{color:#4ADE80;}
+  .hud-timer.paused{border-color:rgba(251,191,36,0.6);background:rgba(251,191,36,0.15);}
+  .hud-timer.paused #timerText{
+    color:#FBBF24;
+    animation: blinkAnim 1.2s infinite ease-in-out;
+  }
+  @keyframes blinkAnim{0%,100%{opacity:1;}50%{opacity:.4;}}
+
+  .hud-timer-btn{
+    background:rgba(255,255,255,0.15);border:none;color:#fff;
+    width:24px;height:24px;border-radius:50%;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;font-size:10px;
+  }
+  .hud-timer-btn:hover{background:rgba(255,255,255,0.3);}
+
+  .hud-slide-info{font-size:12px;font-weight:800;color:#D1D5DB;}
+  .hud-exit{background:transparent;border:1px solid rgba(255,255,255,0.3);color:#fff;padding:5px 12px;border-radius:20px;font-size:10.5px;font-weight:700;cursor:pointer;}
+  .hud-exit:hover{background:rgba(239,65,54,0.8);border-color:transparent;}
+
+  footer{background:var(--ink);color:#9AA0AE;text-align:center;padding:32px;font-size:12px;}
+  footer b{color:#fff;}
+  @media(max-width:850px){.g3,.g2,.g4,.calc,.swot,.matrix-grid,.flow-grid{grid-template-columns:1fr;}nav ul{display:none;}}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="mainNav">
+  <div class="brand">PG <span>Madukismo</span> · PKL</div>
+  <ul>
+    <li><a href="#slide-0">Cover</a></li>
+    <li><a href="#slide-1">Bab I: Pendahuluan</a></li>
+    <li><a href="#slide-2">Bab II: Teori</a></li>
+    <li><a href="#slide-3">Bab III: Metode</a></li>
+    <li><a href="#slide-4">Bab IV: Proses & 7P</a></li>
+    <li><a href="#slide-5">Bab IV: Hayami</a></li>
+    <li><a href="#slide-6">Bab IV: SWOT</a></li>
+    <li><a href="#slide-7">Bab V: Penutup</a></li>
+    <li>
+      <button class="btn-present" onclick="startPresentationMode()">
+        <span>🎬</span> Mode Presentasi
+      </button>
+    </li>
+  </ul>
+</nav>
+
+<!-- SLIDE 0: HERO / COVER -->
+<section id="slide-0" class="slide-section hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Seminar Hasil Praktik Kerja Lapangan (PKL)</div>
+    <h1>Manajemen Pemasaran Produk <span>Gula Pasir Madukismo</span> di PT Madubaru Yogyakarta</h1>
+    <p>Kajian Terpadu Bauran Pemasaran (7P), Saluran Distribusi, Analisis Nilai Tambah & Margin Metode Hayami, serta Perumusan Strategi Bisnis Berbasis SWOT.</p>
+    
+    <div class="hero-author">
+      <div><span>Lokasi PKL:</span> PT Madubaru (PG-PS Madukismo), Bantul, D.I. Yogyakarta</div>
+      <div><span>Institusi:</span> Fakultas Pertanian, Universitas Jenderal Soedirman</div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b>1955</b><small>Tahun Berdiri</small></div>
+      <div class="stat"><b>7,0%</b><small>Rendemen Gula</small></div>
+      <div class="stat"><b>247</b><small>Jaringan Outlet</small></div>
+      <div class="stat"><b>27 Ha</b><small>Area Pabrik</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 1: BAB I - PENDAHULUAN -->
+<section id="slide-1" class="slide-section">
+  <div class="eyebrow">Bab I · Pendahuluan</div>
+  <h2>Latar Belakang, <span>Tujuan & Manfaat</span></h2>
+  <p class="sub">Tingginya defisit konsumsi gula nasional menuntut efektivitas rantai pasok dan penciptaan nilai tambah agroindustri tebu.</p>
+
+  <div class="grid g3">
+    <!-- Latar Belakang GAP -->
+    <div class="card">
+      <div class="tag">Urgensi Nasional</div>
+      <h3>Defisit Gula 4,83 Juta Ton</h3>
+      <p>Berdasarkan data BPS (2025), kebutuhan nasional mencapai <b>7,51 juta ton</b> (26,67 kg/kapita), sedangkan produksi dalam negeri hanya <b>2,67 juta ton</b>. Defisit ini mengharuskan PT Madubaru menjaga efisiensi produksi & pasar.</p>
+    </div>
+    
+    <!-- 4 Tujuan PKL -->
+    <div class="card">
+      <div class="tag">Tujuan PKL</div>
+      <h3>4 Fokus Utama Analisis</h3>
+      <ul>
+        <li>Implementasi bauran pemasaran (Marketing Mix 7P).</li>
+        <li>Pemetaan saluran distribusi (Marketing Channels).</li>
+        <li>Kalkulasi nilai tambah & margin Metode Hayami.</li>
+        <li>Formulasi strategi pemasaran berbasis Matriks SWOT.</li>
+      </ul>
+    </div>
+
+    <!-- 3 Manfaat PKL -->
+    <div class="card">
+      <div class="tag">Manfaat Nyata</div>
+      <h3>Kontribusi 3 Pihak</h3>
+      <ul>
+        <li><b>Mahasiswa:</b> Implementasi teori 7P & Hayami secara empiris.</li>
+        <li><b>PT Madubaru:</b> Rekomendasi penetapan harga & antisipasi stock-out.</li>
+        <li><b>Universitas (Unsoed):</b> Penguatan kurikulum & kemitraan industri.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="chartbox" style="margin-top:16px;">
+    <canvas id="gapChart" height="75"></canvas>
+  </div>
+</section>
+
+<!-- SLIDE 2: BAB II - TINJAUAN PUSTAKA -->
+<section id="slide-2" class="slide-section">
+  <div class="eyebrow">Bab II · Tinjauan Pustaka</div>
+  <h2>Landasan Teori &amp; <span>Kerangka Analisis</span></h2>
+  <p class="sub">Empat pilar metodologi manajemen pemasaran dan ekonomi agroindustri.</p>
+
+  <div class="grid g4">
+    <div class="card">
+      <div class="tag">Teori 01</div>
+      <h3>Marketing Mix 7P</h3>
+      <p>Konsep Kotler & Keller yang diintegrasikan ke agribisnis: <i>Product, Price, Place, Promotion, People, Process, Physical Evidence</i>.</p>
+    </div>
+    <div class="card">
+      <div class="tag">Teori 02</div>
+      <h3>Saluran Pemasaran</h3>
+      <p>Struktur penyaluran barang dari produsen ke konsumen (Direct, Indirect, & Hybrid Channel) untuk menekan risiko peralihan merek.</p>
+    </div>
+    <div class="card">
+      <div class="tag">Teori 03</div>
+      <h3>Metode Hayami</h3>
+      <p>Model kuantitatif mengukur pertambahan nilai ekonomi (<i>Form, Time, Place, Possession Utility</i>), margin, serta pembagian balas jasa faktor produksi.</p>
+    </div>
+    <div class="card">
+      <div class="tag">Teori 04</div>
+      <h3>Matriks SWOT</h3>
+      <p>Evaluasi faktor internal (S-W) dan eksternal (O-T) untuk menyusun matriks strategi taktis: SO, WO, ST, dan WT.</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;background:#FAFBFC;border-left:4px solid var(--ink);">
+    <h3 style="font-size:14px;">Rumus Kunci Margin Pemasaran & Nilai Tambah Hayami</h3>
+    <p style="font-family:monospace;font-size:12px;color:var(--ink);margin-top:4px;">
+      <b>MP = Pr - Pf</b> &nbsp;|&nbsp; <b>Nilai Tambah = Nilai Output - Nilai Bahan Baku - Sumbangan Input Lain</b>
+    </p>
+  </div>
+</section>
+
+<!-- SLIDE 3: BAB III - METODE PKL -->
+<section id="slide-3" class="slide-section">
+  <div class="eyebrow">Bab III · Metode PKL</div>
+  <h2>Waktu, Tempat &amp; <span>Metode Pengumpulan Data</span></h2>
+  <p class="sub">Pelaksanaan kegiatan Praktik Kerja Lapangan secara terstruktur di PT Madubaru.</p>
+
+  <div class="grid g3">
+    <div class="card">
+      <div class="tag">Lokasi & Waktu</div>
+      <h3>PT Madubaru (PG Madukismo)</h3>
+      <p>📍 Jl. Padokan, Tirtonirmolo, Kec. Kasihan, Kab. Bantul, D.I. Yogyakarta 55181.<br>
+      📅 <b>13 Juli – 12 Agustus 2026</b> (±25 Hari Kerja pada masa giling aktif).</p>
+    </div>
+
+    <div class="card">
+      <div class="tag">Metode Pengumpulan Data</div>
+      <h3>Primer & Sekunder</h3>
+      <ul>
+        <li><b>Data Primer:</b> Partisipasi aktif, observasi operasional giling, wawancara tim pemasaran & pembimbing.</li>
+        <li><b>Data Sekunder:</b> Arsip lelang pabrik, Company Profile 2025, standar SNI 3140-3:2020, data BPS.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="tag">Ruang Lingkup Kajian</div>
+      <h3>5 Materi Pembahasan</h3>
+      <ul>
+        <li>Profil & alur 7 stasiun produksi pabrik.</li>
+        <li>Implementasi 7P gula curah vs ritel.</li>
+        <li>Pemetaan 2 tipe saluran distribusi.</li>
+        <li>Simulasi margin Hayami Tahap I & II.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Timeline Table -->
+  <table class="timeline-table">
+    <thead>
+      <tr>
+        <th style="width:50px;">No</th>
+        <th>Jenis Kegiatan Praktik Kerja Lapangan</th>
+        <th class="center" style="width:100px;">Minggu 1</th>
+        <th class="center" style="width:100px;">Minggu 2</th>
+        <th class="center" style="width:100px;">Minggu 3</th>
+        <th class="center" style="width:100px;">Minggu 4</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="center">1</td>
+        <td>Orientasi pabrik, pengenalan sistem kerja, struktur organisasi & pengamatan awal stasiun giling.</td>
+        <td class="center"><span class="badge-week">Aktif</span></td>
+        <td class="center">-</td>
+        <td class="center">-</td>
+        <td class="center">-</td>
+      </tr>
+      <tr>
+        <td class="center">2</td>
+        <td>Observasi lapangan: identifikasi variabel bauran 7P dan pemetaan sebaran outlet ritel.</td>
+        <td class="center">-</td>
+        <td class="center"><span class="badge-week">Aktif</span></td>
+        <td class="center">-</td>
+        <td class="center">-</td>
+      </tr>
+      <tr>
+        <td class="center">3</td>
+        <td>Wawancara mendalam, pengumpulan data lelang, input biaya Hayami & perumusan Matriks SWOT.</td>
+        <td class="center">-</td>
+        <td class="center">-</td>
+        <td class="center"><span class="badge-week">Aktif</span></td>
+        <td class="center">-</td>
+      </tr>
+      <tr>
+        <td class="center">4</td>
+        <td>Rekapitulasi data akhir, penyusunan draf Laporan PKL dan penyusunan rekomendasi manajerial.</td>
+        <td class="center">-</td>
+        <td class="center">-</td>
+        <td class="center">-</td>
+        <td class="center"><span class="badge-week">Aktif</span></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- SLIDE 4: BAB IV - PROSES PRODUKSI & 7P -->
+<section id="slide-4" class="slide-section">
+  <div class="eyebrow">Bab IV · Hasil & Pembahasan (1)</div>
+  <h2>Alur Pabrikasi &amp; <span>Bauran Pemasaran (7P)</span></h2>
+  <p class="sub">Transformasi tebu melalui 7 stasiun giling dan implementasi 7P di pasar B2B vs B2C.</p>
+
+  <!-- 7 Stasiun Produksi -->
+  <div class="flow-grid">
+    <div class="flow-step"><b>01. Persiapan</b><p>Timbangan & Unigrator</p><small>Pencacahan tebu</small></div>
+    <div class="flow-step"><b>02. Gilingan</b><p>5 Unit Seri</p><small>Ekstraksi nira mentah</small></div>
+    <div class="flow-step"><b>03. Pemurnian</b><p>Defekasi & Sulfitasi</p><small>Susu kapur + belerang</small></div>
+    <div class="flow-step"><b>04. Penguapan</b><p>Evaporator I-V</p><small>15°Brix ➔ 60°Brix</small></div>
+    <div class="flow-step"><b>05. Pemasakan</b><p>Sistem ACD</p><small>Kristalisasi nira kental</small></div>
+    <div class="flow-step"><b>06. Putaran</b><p>Sentrifugasi</p><small>Pemisahan kristal & tetes</small></div>
+    <div class="flow-step"><b>07. Selesai</b><p>Pengeringan & Pack</p><small>Karung 50kg & Pack 1kg</small></div>
+  </div>
+
+  <div class="grid g2" style="margin-top:16px;">
+    <div class="chartbox"><canvas id="revChart"></canvas></div>
+    <div class="chartbox"><canvas id="distChart"></canvas></div>
+  </div>
+</section>
+
+<!-- SLIDE 5: BAB IV - NILAI TAMBAH HAYAMI & KALKULATOR -->
+<section id="slide-5" class="slide-section">
+  <div class="eyebrow">Bab IV · Hasil & Pembahasan (2)</div>
+  <h2>Analisis Nilai Tambah <span>Metode Hayami</span></h2>
+  <p class="sub">Simulasi real-time komparasi nilai tambah pengolahan gula curah vs pengemasan ulang ritel 1 kg.</p>
+  
+  <div class="calc-preset-bar">
+    <button class="btn-preset active" id="btnPreset1" onclick="applyPreset(1)">🔘 Muat Preset: Tahap I (Gula Curah 50 kg)</button>
+    <button class="btn-preset" id="btnPreset2" onclick="applyPreset(2)">🔘 Muat Preset: Tahap II (Gula Ritel 1 kg)</button>
+  </div>
+
+  <div class="calc">
+    <div class="card">
+      <label>Kapasitas Output (Kg)</label><input type="number" id="i_output" value="250000">
+      <label>Input Bahan Baku Tebu (Kg)</label><input type="number" id="i_input" value="3500000">
+      <label>Tenaga Kerja Langsung (HOK)</label><input type="number" id="i_labor" value="1279">
+      <label>Upah Rata-rata (Rp/HOK)</label><input type="number" id="i_wage" value="100000">
+      <label>Harga Bahan Baku Tebu (Rp/Kg)</label><input type="number" id="i_raw" value="684.18" step="0.01">
+      <label>Sumbangan Input Lain (Rp/Kg)</label><input type="number" id="i_other" value="85.71" step="0.01">
+      <label>Harga Output Gula (Rp/Kg)</label><input type="number" id="i_price" value="14513">
+      <button class="btn-calc" onclick="calculateHayami()">⚡ Hitung Nilai Tambah</button>
+    </div>
+    <div class="result" id="calcResult">
+      <div style="opacity:.7;font-size:12px;">Estimasi Nilai Tambah</div>
+      <div class="big" id="res_va">Rp266,75 / kg</div>
+      <div class="row"><span>Faktor Konversi (Rendemen)</span><b id="res_cf">0.07143</b></div>
+      <div class="row"><span>Nilai Output</span><b id="res_vo">Rp1.036,64</b></div>
+      <div class="row"><span>Rasio Nilai Tambah</span><b id="res_var">25.73%</b></div>
+      <div class="row"><span>Pendapatan Tenaga Kerja</span><b id="res_inc">Rp36,54 / kg (13.70%)</b></div>
+      <div class="row"><span>Keuntungan Perusahaan</span><b id="res_prof">Rp230,21 / kg (86.30%)</b></div>
+      <div class="row"><span>Marjin Pemasaran</span><b id="res_mar">Rp352,46 / kg</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 6: BAB IV - ANALISIS SWOT & STRATEGI -->
+<section id="slide-6" class="slide-section">
+  <div class="eyebrow">Bab IV · Hasil & Pembahasan (3)</div>
+  <h2>Matriks SWOT &amp; <span>Formulasi Strategi</span></h2>
+  <p class="sub">Rekomendasi taktis berbasis analisis faktor internal dan eksternal PG Madukismo.</p>
+
+  <div class="swot">
+    <div class="box s"><h4>Strengths (Kekuatan)</h4>
+      <ul>
+        <li>Brand awareness gula MK di DIY & Jateng sangat kuat</li>
+        <li>Mutu terjamin SNI 3140-3:2020 & Halal</li>
+        <li>Sistem pengolahan terintegrasi curah dan ritel</li>
+        <li>Nilai tambah gula ritel sangat tinggi (Rp1.641/kg)</li>
+      </ul>
+    </div>
+    <div class="box w"><h4>Weaknesses (Kelemahan)</h4>
+      <ul>
+        <li>Alokasi kemasan ritel 1 kg rendah (0,56% total volume)</li>
+        <li>Ketergantungan sangat tinggi pada B2B curah (99,44%)</li>
+        <li>Pemasaran dan promosi online belum optimal</li>
+      </ul>
+    </div>
+    <div class="box o"><h4>Opportunities (Peluang)</h4>
+      <ul>
+        <li>Tren kesadaran masyarakat pada gula murni higienis</li>
+        <li>Defisit konsumsi nasional membuka ruang ekspansi pasar</li>
+      </ul>
+    </div>
+    <div class="box t"><h4>Threats (Ancaman)</h4>
+      <ul>
+        <li>Persaingan merek kompetitor (Gulaku, Rose Brand, GMP)</li>
+        <li>Tingginya ongkos kirim logistik penjualan e-commerce</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="matrix-grid">
+    <div class="m-box">
+      <h5>Strategi SO</h5>
+      <ul>
+        <li>Optimalkan kuota 50 kg ke industri mamin untuk stabilitas arus kas.</li>
+        <li>Manfaatkan puncak giling (Jun-Agu) untuk memacu volume ritel 1 kg.</li>
+      </ul>
+    </div>
+    <div class="m-box">
+      <h5>Strategi WO</h5>
+      <ul>
+        <li>Perencanaan rantai pasok preventif agar ritel modern bebas <i>stock-out</i>.</li>
+        <li>Insentif kemitraan bagi petani guna mengamankan kontinuitas tebu.</li>
+      </ul>
+    </div>
+    <div class="m-box">
+      <h5>Strategi ST</h5>
+      <ul>
+        <li>Perkuat branding lokal MK Istimewa menahan substitusi merek nasional.</li>
+        <li>Terapkan bundling paket dan same-day delivery via armada mandiri.</li>
+      </ul>
+    </div>
+    <div class="m-box">
+      <h5>Strategi WT</h5>
+      <ul>
+        <li>Upskilling SDM dalam digital marketing dan logistik terpadu.</li>
+        <li>Efisiensi kemasan dan restrukturisasi distribusi hadapi regulasi HET.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 7: BAB V - PENUTUP (KESIMPULAN & SARAN) -->
+<section id="slide-7" class="slide-section">
+  <div class="eyebrow">Bab V · Penutup</div>
+  <h2>Kesimpulan &amp; <span>Saran Aplikatif</span></h2>
+  <p class="sub">Intisari kajian Praktik Kerja Lapangan dan rekomendasi pengembangan ke depan.</p>
+
+  <div class="grid g2">
+    <div class="card" style="border-top:4px solid var(--ink);">
+      <div class="tag">Kesimpulan Utama</div>
+      <h3>4 Kesimpulan Analisis</h3>
+      <ul>
+        <li><b>7P:</b> Penerapan bauran terintegrasi dengan diferensiasi B2B curah 50 kg dan B2C ritel 1 kg MK Istimewa.</li>
+        <li><b>Saluran:</b> Pola distribusi multi-channel di 247 outlet (Jateng, DIY, Jakarta, Jatim).</li>
+        <li><b>Hayami:</b> Nilai tambah tahap I sebesar Rp266,75/kg (rasio 25,73%), melonjak pada tahap II ritel menjadi Rp1.641,00/kg (rasio 9,85%).</li>
+        <li><b>SWOT:</b> Prioritas strategi difokuskan pada peningkatan porsi ritel 1 kg dan mitigasi ongkos kirim.</li>
+      </ul>
+    </div>
+
+    <div class="card" style="border-top:4px solid var(--red);">
+      <div class="tag">Saran Aplikatif</div>
+      <h3>Rekomendasi 3 Pihak</h3>
+      <ul>
+        <li><b>Bagi PT Madubaru:</b> Membangun <i>safety stock</i> ritel saat puncak giling agar terhindar dari <i>stock-out</i> di supermarket (Superindo) dan bundling kemasan 5-10 kg.</li>
+        <li><b>Bagi Petani Mitra:</b> Penerapan <i>Good Agricultural Practices</i> (GAP) guna mendongkrak rendemen > 7,0%.</li>
+        <li><b>Bagi Peneliti Lanjutan:</b> Analisis kuantitatif <i>farmer's share</i> dan potensi nilai tambah produk samping (molases, blotong, bagasse).</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <b>Praktik Kerja Lapangan: Manajemen Pemasaran Gula Pasir Madukismo di PT Madubaru Yogyakarta</b><br>
+  Fakultas Pertanian · Universitas Jenderal Soedirman
+</footer>
+
+<!-- PRESENTER HUD -->
+<div id="presenterHUD">
+  <button class="hud-btn" onclick="prevSlide()" title="Slide Sebelumnya (Panah Kiri)">❮</button>
+  <div class="hud-slide-info" id="hudSlideText">Slide 0 / 7</div>
+  <button class="hud-btn" onclick="nextSlide()" title="Slide Selanjutnya (Panah Kanan / Spasi)">❯</button>
+  
+  <div class="hud-timer running" id="hudTimerBadge" title="Klik tombol untuk Pause/Play Timer (Shortcut: Huruf 'P')">
+    <button class="hud-timer-btn" id="btnTimerToggle" onclick="toggleTimer()">⏸️</button>
+    <span id="timerText">00:00</span>
+  </div>
+
+  <button class="hud-exit" onclick="exitPresentationMode()">Keluar (Esc)</button>
+</div>
+
+<script>
+const rp = n => 'Rp ' + Number(n).toLocaleString('id-ID', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+// Charts
+new Chart(document.getElementById('gapChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Total Konsumsi Nasional (2025)', 'Produksi Domestik Riil', 'Defisit Nasional (Impor)'],
+    datasets: [{
+      data: [7512726, 2670000, 4830000],
+      backgroundColor: ['#2F3142', '#22A06B', '#EF4136'],
+      borderRadius: 6
+    }]
+  },
+  options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: v => (v / 1000000).toFixed(1) + ' Jt Ton' } } } }
+});
+
+new Chart(document.getElementById('revChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Gula Curah 50 kg (Rp278,7 M)', 'Gula Ritel 1 kg (Rp1,81 M)'],
+    datasets: [{ data: [278700790200, 1810342500], backgroundColor: ['#EF4136', '#2F3142'], hoverOffset: 6 }]
+  },
+  options: { plugins: { title: { display: true, text: 'Porsi Pendapatan 2025 (%)', font: { weight: 'bold', size: 13 } }, legend: { position: 'bottom' } } }
+});
+
+new Chart(document.getElementById('distChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Jawa Tengah & DIY', 'DKI & Jawa Barat', 'Jawa Timur'],
+    datasets: [{ data: [241, 4, 2], backgroundColor: '#EF4136', borderRadius: 6 }]
+  },
+  options: { indexAxis: 'y', plugins: { title: { display: true, text: 'Sebaran 247 Outlet Ritel', font: { weight: 'bold', size: 13 } }, legend: { display: false } } }
+});
+
+// Kalkulator
+function calculateHayami() {
+  const output = parseFloat(document.getElementById('i_output').value) || 0;
+  const input = parseFloat(document.getElementById('i_input').value) || 1;
+  const labor = parseFloat(document.getElementById('i_labor').value) || 0;
+  const wage = parseFloat(document.getElementById('i_wage').value) || 0;
+  const rawPrice = parseFloat(document.getElementById('i_raw').value) || 0;
+  const otherInputs = parseFloat(document.getElementById('i_other').value) || 0;
+  const outputPrice = parseFloat(document.getElementById('i_price').value) || 0;
+
+  const cf = output / input;
+  const laborCoef = labor / input;
+  const outputValue = cf * outputPrice;
+  const valueAdded = outputValue - otherInputs - rawPrice;
+  const valueAddedRatio = (valueAdded / outputValue) * 100;
+  const laborIncome = laborCoef * wage;
+  const laborShare = (laborIncome / valueAdded) * 100;
+  const profit = valueAdded - laborIncome;
+  const profitRate = (profit / valueAdded) * 100;
+  const margin = outputValue - rawPrice;
+
+  document.getElementById('res_va').innerText = rp(valueAdded) + ' / kg';
+  document.getElementById('res_cf').innerText = cf.toFixed(5);
+  document.getElementById('res_vo').innerText = rp(outputValue);
+  document.getElementById('res_var').innerText = valueAddedRatio.toFixed(2) + '%';
+  document.getElementById('res_inc').innerText = rp(laborIncome) + ' (' + laborShare.toFixed(2) + '%)';
+  document.getElementById('res_prof').innerText = rp(profit) + ' (' + profitRate.toFixed(2) + '%)';
+  document.getElementById('res_mar').innerText = rp(margin) + ' / kg';
+}
+
+function applyPreset(stage) {
+  document.getElementById('btnPreset1').classList.toggle('active', stage === 1);
+  document.getElementById('btnPreset2').classList.toggle('active', stage === 2);
+
+  if (stage === 1) {
+    document.getElementById('i_output').value = 250000;
+    document.getElementById('i_input').value = 3500000;
+    document.getElementById('i_labor').value = 1279;
+    document.getElementById('i_wage').value = 100000;
+    document.getElementById('i_raw').value = 684.18;
+    document.getElementById('i_other').value = 85.71;
+    document.getElementById('i_price').value = 14513;
+  } else {
+    document.getElementById('i_output').value = 1408;
+    document.getElementById('i_input').value = 1408;
+    document.getElementById('i_labor').value = 10;
+    document.getElementById('i_wage').value = 100000;
+    document.getElementById('i_raw').value = 14513;
+    document.getElementById('i_other').value = 500;
+    document.getElementById('i_price').value = 16654;
+  }
+  calculateHayami();
+}
+
+// Presentation Controller
+let currentSlide = 0;
+const totalSlides = 7;
+let timerInterval = null;
+let secondsElapsed = 0;
+let isPresenting = false;
+let isTimerRunning = false;
+
+function updateSlideView() {
+  const target = document.getElementById(`slide-${currentSlide}`);
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  document.getElementById('hudSlideText').innerText = `Slide ${currentSlide} / ${totalSlides}`;
+}
+
+function nextSlide() {
+  if (currentSlide < totalSlides) {
+    currentSlide++;
+    updateSlideView();
+  }
+}
+
+function prevSlide() {
+  if (currentSlide > 0) {
+    currentSlide--;
+    updateSlideView();
+  }
+}
+
+function updateTimerDisplay() {
+  const m = String(Math.floor(secondsElapsed / 60)).padStart(2, '0');
+  const s = String(secondsElapsed % 60).padStart(2, '0');
+  const timerElem = document.getElementById('timerText');
+  timerElem.innerText = `${m}:${s}`;
+  
+  if (secondsElapsed >= 600) {
+    timerElem.style.color = '#EF4136';
+  } else if (!isTimerRunning) {
+    timerElem.style.color = '#FBBF24';
+  } else {
+    timerElem.style.color = '#4ADE80';
+  }
+}
+
+function runTimer() {
+  if (timerInterval) clearInterval(timerInterval);
+  isTimerRunning = true;
+  document.getElementById('btnTimerToggle').innerText = '⏸️';
+  const badge = document.getElementById('hudTimerBadge');
+  badge.classList.remove('paused');
+  badge.classList.add('running');
+  updateTimerDisplay();
+
+  timerInterval = setInterval(() => {
+    secondsElapsed++;
+    updateTimerDisplay();
+  }, 1000);
+}
+
+function pauseTimer() {
+  isTimerRunning = false;
+  clearInterval(timerInterval);
+  document.getElementById('btnTimerToggle').innerText = '▶️';
+  const badge = document.getElementById('hudTimerBadge');
+  badge.classList.remove('running');
+  badge.classList.add('paused');
+  updateTimerDisplay();
+}
+
+function toggleTimer() {
+  if (isTimerRunning) {
+    pauseTimer();
+  } else {
+    runTimer();
+  }
+}
+
+function startPresentationMode() {
+  isPresenting = true;
+  document.getElementById('presenterHUD').classList.add('active');
+  
+  if (document.documentElement.requestFullscreen) {
+    document.documentElement.requestFullscreen().catch(err => console.log(err));
+  }
+
+  secondsElapsed = 0;
+  runTimer();
+  currentSlide = 0;
+  updateSlideView();
+}
+
+function exitPresentationMode() {
+  isPresenting = false;
+  document.getElementById('presenterHUD').classList.remove('active');
+  pauseTimer();
+  if (document.exitFullscreen && document.fullscreenElement) {
+    document.exitFullscreen().catch(err => console.log(err));
+  }
+}
+
+document.addEventListener('keydown', (e) => {
+  if (!isPresenting) return;
+  if (e.key === 'p' || e.key === 'P') {
+    e.preventDefault();
+    toggleTimer();
+  } else if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+    e.preventDefault();
+    nextSlide();
+  } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+    e.preventDefault();
+    prevSlide();
+  } else if (e.key === 'Escape') {
+    exitPresentationMode();
+  }
+});
+</script>
+</body>
+</html>
