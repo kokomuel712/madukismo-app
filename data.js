@@ -92,8 +92,8 @@ module.exports = {
       ST: ["Perkuat branding MK di DIY & Jateng", "Bundling + same-day delivery armada sendiri"],
       WT: ["Upskilling SDM manajemen & pemasaran", "Manfaatkan marketplace + promosi media sosial"]
     }
-  }
-  
+  },
+
   "company": {
     "name": "PT Madubaru — PG Madukismo",
     "location": "Bantul, D.I. Yogyakarta",
