@@ -2,239 +2,768 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Manajemen Pemasaran Gula Pasir Madukismo — PT Madubaru</title>
-<!-- Chart.js & Google Fonts -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>PG Madukismo — Seminar Hasil PKL Agribisnis</title>
+
+<!-- Chart.js & Fonts -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+
 <style>
-  :root{
-    --red:#EF4136;
-    --red-dark:#D7301F;
-    --ink:#2F3142;
-    --grey:#6B7280;
-    --bg:#F4F6F9;
-    --card:#FFFFFF;
-    --border:#E5E7EB;
+  :root {
+    --bg: #090D16;
+    --bg-card: rgba(18, 24, 38, 0.75);
+    --bg-card-hover: rgba(26, 34, 53, 0.9);
+    --border: rgba(255, 255, 255, 0.08);
+    --border-glow: rgba(239, 65, 54, 0.35);
+    --red: #EF4136;
+    --red-glow: rgba(239, 65, 54, 0.4);
+    --red-dark: #C92A20;
+    --green: #10B981;
+    --yellow: #F59E0B;
+    --blue: #3B82F6;
+    --text-main: #F9FAFB;
+    --text-muted: #9CA3AF;
+    --font-mono: 'JetBrains Mono', monospace;
   }
-  *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;-webkit-tap-highlight-color:transparent;}
-  body{background:var(--bg);color:var(--ink);scroll-behavior:smooth;overflow-x:hidden;width:100%;line-height:1.5;}
 
-  /* ================= NAVBAR (RESPONSIF MOBILE) ================= */
-  nav{position:fixed;top:0;width:100%;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);
-      box-shadow:0 2px 15px rgba(0,0,0,.06);z-index:100;display:flex;justify-content:space-between;
-      align-items:center;padding:12px 24px;transition:.3s;}
-  .brand{font-weight:900;font-size:15px;letter-spacing:-.3px;white-space:nowrap;}.brand span{color:var(--red);}
-  
-  /* Menu Navigasi Desktop */
-  nav ul.nav-links{display:flex;gap:12px;list-style:none;align-items:center;}
-  nav ul.nav-links a{text-decoration:none;color:var(--grey);font-weight:700;font-size:12px;transition:.2s;white-space:nowrap;}
-  nav ul.nav-links a:hover{color:var(--red);}
-
-  .btn-present{
-    background:linear-gradient(135deg, var(--red), var(--red-dark));
-    color:#fff !important;padding:7px 14px;border-radius:30px;font-weight:800;
-    font-size:11.5px;letter-spacing:.03em;border:none;cursor:pointer;
-    display:flex;align-items:center;gap:6px;box-shadow:0 4px 12px rgba(239,65,54,.3);
-    transition:all .25s ease;white-space:nowrap;
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    -webkit-tap-highlight-color: transparent;
   }
-  .btn-present:hover{transform:scale(1.03);}
 
-  /* Mobile Nav Toggle */
-  .menu-toggle{display:none;background:none;border:none;font-size:22px;cursor:pointer;color:var(--ink);}
+  body {
+    background-color: var(--bg);
+    color: var(--text-main);
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    line-height: 1.5;
+    background-image: 
+      radial-gradient(circle at 15% 15%, rgba(239, 65, 54, 0.08) 0%, transparent 40%),
+      radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
+    background-attachment: fixed;
+  }
 
-  /* ================= SLIDE SECTIONS ================= */
-  .slide-section{min-height:100vh;padding:85px 24px 60px;max-width:1200px;margin:0 auto;display:flex;flex-direction:column;justify-content:center;}
-  .eyebrow{color:var(--red);font-weight:800;letter-spacing:.18em;font-size:11px;text-transform:uppercase;margin-bottom:6px;}
-  h2{font-size:clamp(22px, 3.5vw, 30px);font-weight:900;margin-bottom:6px;letter-spacing:-.5px;color:var(--ink);line-height:1.2;}
-  h2 span{color:var(--red);}
-  .sub{color:var(--grey);margin-bottom:20px;font-size:clamp(13px, 1.8vw, 14.5px);line-height:1.5;}
+  /* TOP PROGRESS BAR */
+  #slideProgressBar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3.5px;
+    background: linear-gradient(90deg, var(--red), #FF7A70, var(--yellow));
+    width: 0%;
+    z-index: 1000;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 10px var(--red-glow);
+  }
 
-  /* HERO */
-  .hero{background:linear-gradient(135deg,#fff 0%,#FFF0EF 100%);position:relative;overflow:hidden;max-width:none;width:100%;}
-  .hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;}
-  .hero h1{font-size:clamp(26px, 5vw, 44px);font-weight:900;line-height:1.15;margin:12px 0;max-width:880px;letter-spacing:-1px;}
-  .hero h1 span{color:var(--red);}
-  .hero p{max-width:720px;color:var(--grey);font-size:clamp(13.5px, 2vw, 15.5px);line-height:1.6;}
-  .hero-author{margin-top:16px;display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--ink);font-weight:600;}
-  .hero-author div span{color:var(--grey);display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;}
+  /* VIRTUAL LASER POINTER */
+  #laserPointer {
+    position: fixed;
+    width: 14px;
+    height: 14px;
+    background: #ff0033;
+    border-radius: 50%;
+    box-shadow: 0 0 15px #ff0033, 0 0 30px #ff0033;
+    pointer-events: none;
+    z-index: 9999;
+    display: none;
+    transform: translate(-50%, -50%);
+  }
+
+  /* NAVBAR */
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(9, 13, 22, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 32px;
+  }
+
+  .brand {
+    font-weight: 900;
+    font-size: 16px;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .brand-badge {
+    background: var(--red);
+    color: #fff;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 6px;
+    font-weight: 800;
+  }
+  .brand span { color: var(--red); }
+
+  nav ul.nav-links {
+    display: flex;
+    gap: 16px;
+    list-style: none;
+    align-items: center;
+  }
+  nav ul.nav-links a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 700;
+    font-size: 12.5px;
+    transition: all 0.2s;
+    padding: 6px 10px;
+    border-radius: 8px;
+  }
+  nav ul.nav-links a:hover, nav ul.nav-links a.active {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .btn-present {
+    background: linear-gradient(135deg, var(--red), var(--red-dark));
+    color: #fff !important;
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-weight: 800;
+    font-size: 12px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 0 20px var(--red-glow);
+    transition: all 0.25s ease;
+  }
+  .btn-present:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(239, 65, 54, 0.6);
+  }
+
+  .mobile-menu-btn {
+    display: none;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: #fff;
+    font-size: 18px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  /* SECTIONS */
+  .slide-section {
+    min-height: 100vh;
+    padding: 100px 32px 70px;
+    max-width: 1240px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+
+  .eyebrow {
+    color: var(--red);
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    font-size: 11px;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    background: var(--red);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--red);
+  }
+
+  h2 {
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 900;
+    letter-spacing: -0.8px;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  h2 span {
+    background: linear-gradient(135deg, #fff 30%, var(--red) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .sub {
+    color: var(--text-muted);
+    font-size: clamp(13px, 1.8vw, 15px);
+    margin-bottom: 26px;
+    max-width: 800px;
+  }
+
+  /* GLASS CARDS */
+  .grid { display: grid; gap: 18px; }
+  .g4 { grid-template-columns: repeat(4, 1fr); }
+  .g3 { grid-template-columns: repeat(3, 1fr); }
+  .g2 { grid-template-columns: repeat(2, 1fr); }
+
+  .card {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  }
+  .card:hover {
+    background: var(--bg-card-hover);
+    border-color: rgba(255, 255, 255, 0.18);
+    transform: translateY(-4px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  }
+
+  .card .tag {
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--red);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 6px;
+  }
+  .card h3 {
+    font-size: 16.5px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .card p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .card ul {
+    margin-left: 16px;
+    font-size: 12.5px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-top: 8px;
+  }
+  .card li { margin-bottom: 4px; }
+
+  .chartbox {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    position: relative;
+    width: 100%;
+  }
+
+  /* HERO SPECIAL */
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+  }
+  .hero h1 {
+    font-size: clamp(30px, 5.5vw, 54px);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    margin: 16px 0;
+    max-width: 900px;
+  }
+  .hero p {
+    font-size: clamp(14px, 2vw, 17px);
+    color: var(--text-muted);
+    max-width: 720px;
+    line-height: 1.65;
+  }
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 24px;
+    font-size: 13px;
+  }
+  .meta-pill {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    padding: 8px 16px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .meta-pill b { color: #fff; }
+
+  .stats-hero {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+    margin-top: 36px;
+  }
+  .stat-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 20px;
+  }
+  .stat-card b {
+    font-size: clamp(28px, 4vw, 36px);
+    font-weight: 900;
+    color: #fff;
+    display: block;
+    line-height: 1.1;
+    font-family: var(--font-mono);
+  }
+  .stat-card small {
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 12px;
+  }
+
+  /* 7 STATIONS INTERACTIVE PIPELINE */
+  .pipeline-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .station-node {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 10px;
+    text-align: center;
+    position: relative;
+    transition: all 0.2s;
+  }
+  .station-node:hover {
+    border-color: var(--red);
+    transform: scale(1.03);
+  }
+  .station-node .num {
+    background: rgba(239, 65, 54, 0.15);
+    color: var(--red);
+    font-weight: 800;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    display: inline-block;
+    margin-bottom: 6px;
+    font-family: var(--font-mono);
+  }
+  .station-node h4 {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+  .station-node span {
+    color: var(--text-muted);
+    font-size: 11px;
+    display: block;
+  }
+
+  /* CALCULATOR PRO 2.0 */
+  .calc-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 20px;
+    align-items: stretch;
+  }
+  .preset-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .btn-preset {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-preset.active {
+    background: var(--red);
+    color: #fff;
+    border-color: var(--red);
+    box-shadow: 0 0 15px var(--red-glow);
+  }
+
+  .calc-input-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .calc-field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .calc-field input {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid var(--border);
+    color: #fff;
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: var(--font-mono);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .calc-field input:focus {
+    border-color: var(--red);
+    box-shadow: 0 0 10px var(--red-glow);
+  }
+
+  .calc-result-box {
+    background: linear-gradient(145deg, rgba(31, 41, 55, 0.8), rgba(17, 24, 39, 0.95));
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .va-badge {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    color: var(--red);
+    text-transform: uppercase;
+  }
+  .va-value {
+    font-size: clamp(26px, 3.5vw, 36px);
+    font-weight: 900;
+    color: #fff;
+    font-family: var(--font-mono);
+    margin: 6px 0 16px;
+  }
+  .res-metric {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    font-size: 12.5px;
+  }
+  .res-metric span { color: var(--text-muted); }
+  .res-metric b { color: #fff; font-family: var(--font-mono); }
+
+  /* SWOT TABS */
+  .swot-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  .swot-card {
+    border-radius: 14px;
+    padding: 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .swot-card.s { border-left: 4px solid var(--green); }
+  .swot-card.w { border-left: 4px solid var(--yellow); }
+  .swot-card.o { border-left: 4px solid var(--blue); }
+  .swot-card.t { border-left: 4px solid var(--red); }
   
-  .stats{display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:16px;margin-top:24px;}
-  .stat{background:rgba(255,255,255,0.7);padding:12px 16px;border-radius:12px;border:1px solid rgba(239,65,54,0.15);}
-  .stat b{font-size:clamp(24px, 4vw, 32px);font-weight:900;color:var(--red);display:block;line-height:1.1;}
-  .stat small{color:var(--grey);font-weight:700;font-size:11.5px;}
+  .swot-card h4 {
+    font-size: 13.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .swot-card.s h4 { color: var(--green); }
+  .swot-card.w h4 { color: var(--yellow); }
+  .swot-card.o h4 { color: var(--blue); }
+  .swot-card.t h4 { color: var(--red); }
 
-  /* ================= GRIDS & CARDS ================= */
-  .grid{display:grid;gap:16px;}
-  .g3{grid-template-columns:repeat(3, 1fr);}
-  .g2{grid-template-columns:repeat(2, 1fr);}
-  .g4{grid-template-columns:repeat(4, 1fr);}
-  
-  .card{background:var(--card);border-radius:12px;padding:18px;box-shadow:0 4px 16px rgba(20,25,45,.04);
-        border:1px solid var(--border);transition:.25s;}
-  .card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(20,25,45,.08);}
-  .card .tag{font-size:10px;font-weight:800;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;}
-  .card h3{font-size:15px;font-weight:800;margin:4px 0 6px;color:var(--ink);line-height:1.3;}
-  .card p{font-size:12.5px;color:var(--grey);line-height:1.5;}
-  .card ul{margin-left:16px;font-size:12px;color:var(--grey);line-height:1.5;margin-top:6px;}
+  .matrix-box {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .matrix-box h5 {
+    color: var(--red);
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
 
-  .chartbox{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 4px 16px rgba(20,25,45,.04);border:1px solid var(--border);position:relative;width:100%;}
-
-  /* ================= TABEL RESPONSIVE (BAB III) ================= */
-  .table-responsive{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:12px;border-radius:10px;border:1px solid var(--border);}
-  .timeline-table{width:100%;min-width:600px;border-collapse:collapse;background:#fff;font-size:12px;}
-  .timeline-table th,.timeline-table td{padding:10px 12px;border:1px solid #E5E7EB;text-align:left;}
-  .timeline-table th{background:var(--ink);color:#fff;font-weight:700;}
-  .timeline-table td.center{text-align:center;}
-  .badge-week{background:var(--red);color:#fff;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700;}
-
-  /* ================= FLOW PROSES ================= */
-  .flow-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(135px, 1fr));gap:10px;margin-top:12px;}
-  .flow-step{background:#fff;border:1px solid #E5E7EB;border-radius:8px;padding:10px 8px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,.02);}
-  .flow-step b{display:block;color:var(--red);font-size:10.5px;font-weight:900;margin-bottom:3px;}
-  .flow-step p{font-size:11px;color:var(--ink);font-weight:700;line-height:1.25;}
-  .flow-step small{display:block;font-size:9.5px;color:var(--grey);margin-top:3px;}
-
-  /* ================= SWOT & MATRIX ================= */
-  .swot{display:grid;grid-template-columns:repeat(2, 1fr);gap:12px;}
-  .swot .box{border-radius:10px;padding:16px;color:#fff;}
-  .swot .s{background:linear-gradient(135deg,#22A06B,#178a58);}
-  .swot .w{background:linear-gradient(135deg,#E8A317,#c98a0d);}
-  .swot .o{background:linear-gradient(135deg,#2D7FF9,#1c63d1);}
-  .swot .t{background:linear-gradient(135deg,#EF4136,#c92f24);}
-  .swot h4{font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;opacity:.95;}
-  .swot ul{list-style:none;display:flex;flex-direction:column;gap:4px;}
-  .swot li{font-size:11.5px;line-height:1.4;padding-left:12px;position:relative;}
-  .swot li::before{content:"▸";position:absolute;left:0;}
-
-  .matrix-grid{display:grid;grid-template-columns:repeat(2, 1fr);gap:12px;margin-top:12px;}
-  .m-box{background:#fff;border:1px solid #E5E7EB;border-radius:10px;padding:14px;}
-  .m-box h5{font-size:11px;font-weight:800;color:var(--red);margin-bottom:4px;text-transform:uppercase;}
-  .m-box ul{list-style:disc;margin-left:14px;font-size:11.5px;color:var(--grey);line-height:1.4;}
-
-  /* ================= KALKULATOR ================= */
-  .calc{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start;}
-  .calc-preset-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
-  .btn-preset{flex:1;min-width:180px;background:#F0F2F6;border:1px solid #DDE0E6;padding:8px 10px;border-radius:8px;font-weight:700;font-size:11.5px;cursor:pointer;transition:.2s;}
-  .btn-preset:hover{background:#E2E5EC;}
-  .btn-preset.active{background:var(--ink);color:#fff;border-color:var(--ink);}
-
-  .calc input{width:100%;padding:8px 10px;border:1px solid #DDE0E6;border-radius:6px;margin-top:2px;font-size:13px;}
-  .calc label{font-size:11px;font-weight:700;color:var(--grey);display:block;margin-top:8px;}
-  .calc button.btn-calc{margin-top:14px;background:var(--red);color:#fff;border:none;padding:10px 16px;border-radius:6px;
-        font-weight:800;cursor:pointer;font-size:13px;transition:.2s;width:100%;}
-  .calc button.btn-calc:hover{background:var(--red-dark);}
-  .result{background:var(--ink);color:#fff;border-radius:12px;padding:18px;}
-  .result .row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.10);font-size:12px;}
-  .result .row b{color:#FF8C7F;}
-  .result .big{font-size:clamp(22px, 3.5vw, 26px);font-weight:900;color:#fff;margin:6px 0;}
+  /* TIMELINE RESPONSIVE TABLE */
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+  }
+  table.dark-table {
+    width: 100%;
+    min-width: 600px;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+  table.dark-table th {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  table.dark-table td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+  .tag-active {
+    background: rgba(239, 65, 54, 0.2);
+    color: var(--red);
+    border: 1px solid var(--red);
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 800;
+    text-align: center;
+    display: inline-block;
+  }
 
   /* ================= FLOATING PRESENTER HUD ================= */
-  #presenterHUD{
-    position:fixed;bottom:16px;left:50%;transform:translateX(-50%) translateY(120px);
-    background:rgba(47,49,66,0.95);backdrop-filter:blur(16px);
-    color:#fff;padding:8px 16px;border-radius:50px;
-    display:flex;align-items:center;gap:12px;z-index:999;
-    box-shadow:0 10px 30px rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.15);
-    transition:transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    max-width:94vw;
+  #presenterHUD {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(140px);
+    background: rgba(18, 24, 38, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 50px;
+    padding: 8px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    z-index: 1000;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    max-width: 94vw;
   }
-  #presenterHUD.active{transform:translateX(-50%) translateY(0);}
-  
-  .hud-btn{
-    background:rgba(255,255,255,0.12);color:#fff;border:none;width:32px;height:32px;
-    border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;
-    font-size:13px;font-weight:900;transition:.2s;
-  }
-  .hud-btn:hover{background:var(--red);}
-  
-  .hud-timer{
-    font-family:monospace;font-size:12.5px;font-weight:800;
-    background:rgba(0,0,0,0.35);padding:3px 8px 3px 5px;border-radius:20px;
-    display:flex;align-items:center;gap:5px;border:1px solid rgba(255,255,255,0.12);
-  }
-  .hud-timer.running #timerText{color:#4ADE80;}
-  .hud-timer.paused{border-color:rgba(251,191,36,0.6);background:rgba(251,191,36,0.15);}
-  .hud-timer.paused #timerText{color:#FBBF24;animation:blinkAnim 1.2s infinite ease-in-out;}
-  @keyframes blinkAnim{0%,100%{opacity:1;}50%{opacity:.4;}}
-
-  .hud-timer-btn{
-    background:rgba(255,255,255,0.15);border:none;color:#fff;
-    width:22px;height:22px;border-radius:50%;cursor:pointer;
-    display:flex;align-items:center;justify-content:center;font-size:9px;
+  #presenterHUD.active {
+    transform: translateX(-50%) translateY(0);
   }
 
-  .hud-slide-info{font-size:11.5px;font-weight:800;color:#D1D5DB;white-space:nowrap;}
-  .hud-exit{background:transparent;border:1px solid rgba(255,255,255,0.3);color:#fff;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap;}
+  .hud-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border);
+    color: #fff;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    transition: all 0.2s;
+  }
+  .hud-btn:hover {
+    background: var(--red);
+    border-color: var(--red);
+    transform: scale(1.1);
+  }
+  .hud-btn.active {
+    background: var(--red);
+    box-shadow: 0 0 12px var(--red);
+  }
 
-  footer{background:var(--ink);color:#9AA0AE;text-align:center;padding:28px 20px;font-size:11.5px;}
-  footer b{color:#fff;}
+  .hud-timer {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 4px 12px 4px 6px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--border);
+  }
+  .hud-timer.running #timerText { color: var(--green); }
+  .hud-timer.paused #timerText { color: var(--yellow); animation: blink 1s infinite; }
+  @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
 
-  /* ================= MEDIA QUERIES KHUSUS HP & TABLET ================= */
-  @media(max-width:950px){
-    .g4,.g3{grid-template-columns:repeat(2, 1fr);}
-    nav ul.nav-links{display:none;}
-    nav ul.nav-links.show{
-      display:flex;flex-direction:column;position:absolute;top:100%;left:0;width:100%;
-      background:#fff;padding:16px;box-shadow:0 10px 20px rgba(0,0,0,.08);gap:12px;
+  .hud-timer-btn {
+    background: rgba(255, 255, 255, 0.12);
+    border: none;
+    color: #fff;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+  }
+
+  .hud-info {
+    font-size: 12px;
+    font-weight: 800;
+    color: #fff;
+    font-family: var(--font-mono);
+    white-space: nowrap;
+  }
+  .hud-exit {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-muted);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .hud-exit:hover { background: rgba(239, 65, 54, 0.8); color: #fff; }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 12px;
+    background: rgba(9, 13, 22, 0.95);
+  }
+  footer b { color: #fff; }
+
+  /* RESPONSIVENESS */
+  @media (max-width: 1024px) {
+    .g4 { grid-template-columns: repeat(2, 1fr); }
+    .g3 { grid-template-columns: repeat(2, 1fr); }
+    .calc-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 768px) {
+    nav ul.nav-links { display: none; }
+    nav ul.nav-links.mobile-open {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background: rgba(18, 24, 38, 0.98);
+      backdrop-filter: blur(20px);
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
     }
-    .menu-toggle{display:block;}
-  }
-
-  @media(max-width:680px){
-    .slide-section{padding:75px 16px 45px;}
-    .hero-inner{padding:0 16px;}
-    .grid,.g4,.g3,.g2,.calc,.swot,.matrix-grid{grid-template-columns:1fr;}
-    .stats{grid-template-columns:repeat(2, 1fr);gap:10px;}
-    .stat{padding:10px;}
-    .chartbox{padding:12px;}
-    #presenterHUD{padding:6px 12px;gap:8px;}
-    .hud-exit{display:none;} /* Sembunyikan tombol keluar teks di layar sempit, cukup tekan X atau tombol mode */
+    .mobile-menu-btn { display: block; }
+    .slide-section { padding: 85px 18px 50px; }
+    .grid, .g3, .g2, .swot-grid { grid-template-columns: 1fr; }
+    .stats-hero { grid-template-columns: repeat(2, 1fr); }
+    .calc-input-group { grid-template-columns: 1fr; }
+    #presenterHUD { bottom: 12px; padding: 6px 14px; gap: 8px; }
+    .hud-exit { display: none; }
   }
 </style>
 </head>
 <body>
 
+<!-- TOP PROGRESS BAR -->
+<div id="slideProgressBar"></div>
+
+<!-- VIRTUAL LASER POINTER -->
+<div id="laserPointer"></div>
+
 <!-- NAVBAR -->
-<nav id="mainNav">
-  <div class="brand">PG <span>Madukismo</span> · PKL</div>
-  
-  <ul class="nav-links" id="navMenu">
-    <li><a href="#slide-0" onclick="toggleMobileMenu()">Cover</a></li>
-    <li><a href="#slide-1" onclick="toggleMobileMenu()">Bab I</a></li>
-    <li><a href="#slide-2" onclick="toggleMobileMenu()">Bab II</a></li>
-    <li><a href="#slide-3" onclick="toggleMobileMenu()">Bab III</a></li>
-    <li><a href="#slide-4" onclick="toggleMobileMenu()">Bab IV: 7P</a></li>
-    <li><a href="#slide-5" onclick="toggleMobileMenu()">Bab IV: Hayami</a></li>
-    <li><a href="#slide-6" onclick="toggleMobileMenu()">Bab IV: SWOT</a></li>
-    <li><a href="#slide-7" onclick="toggleMobileMenu()">Bab V</a></li>
+<nav>
+  <div class="brand">
+    <span>PG MADUKISMO</span>
+    <div class="brand-badge">PKL 2026</div>
+  </div>
+
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#slide-0" onclick="closeNav()">Cover</a></li>
+    <li><a href="#slide-1" onclick="closeNav()">Bab I</a></li>
+    <li><a href="#slide-2" onclick="closeNav()">Bab II</a></li>
+    <li><a href="#slide-3" onclick="closeNav()">Bab III</a></li>
+    <li><a href="#slide-4" onclick="closeNav()">Bab IV: 7P</a></li>
+    <li><a href="#slide-5" onclick="closeNav()">Bab IV: Hayami</a></li>
+    <li><a href="#slide-6" onclick="closeNav()">Bab IV: SWOT</a></li>
+    <li><a href="#slide-7" onclick="closeNav()">Bab V</a></li>
   </ul>
 
-  <div style="display:flex;align-items:center;gap:8px;">
+  <div style="display:flex;align-items:center;gap:10px;">
     <button class="btn-present" onclick="startPresentationMode()">
-      <span>🎬</span> Presentasi
+      <span>🎬</span> Presentasi Pro
     </button>
-    <button class="menu-toggle" onclick="toggleMobileMenu()" aria-label="Menu">☰</button>
+    <button class="mobile-menu-btn" onclick="toggleNav()">☰</button>
   </div>
 </nav>
 
-<!-- SLIDE 0: COVER -->
-<section id="slide-0" class="slide-section hero">
+<!-- SLIDE 0: HERO / COVER -->
+<section id="slide-0" class="slide-section">
   <div class="hero-inner">
-    <div class="eyebrow">Seminar Hasil Praktik Kerja Lapangan (PKL)</div>
-    <h1>Manajemen Pemasaran Produk <span>Gula Pasir Madukismo</span> di PT Madubaru Yogyakarta</h1>
-    <p>Kajian Terpadu Bauran Pemasaran (7P), Saluran Distribusi, Analisis Nilai Tambah & Margin Metode Hayami, serta Perumusan Strategi Bisnis Berbasis SWOT.</p>
+    <div class="eyebrow">Seminar Hasil Praktik Kerja Lapangan</div>
+    <h1>Manajemen Pemasaran Gula Pasir <span>Madukismo</span> di PT Madubaru</h1>
+    <p>Analisis Bauran Pemasaran (7P), Multi-Channel Distribution, Nilai Tambah Metode Hayami 2 Tahap, dan Formulasi Strategi Bisnis Berbasis SWOT.</p>
     
-    <div class="hero-author">
-      <div><span>Lokasi PKL:</span> PT Madubaru (PG-PS Madukismo), Bantul, DIY</div>
-      <div><span>Institusi:</span> Fakultas Pertanian, Universitas Jenderal Soedirman</div>
+    <div class="hero-meta">
+      <div class="meta-pill">🏢 <b>PT Madubaru (PG-PS Madukismo)</b> Bantul, D.I. Yogyakarta</div>
+      <div class="meta-pill">🎓 <b>Fakultas Pertanian</b> Universitas Jenderal Soedirman</div>
     </div>
 
-    <div class="stats">
-      <div class="stat"><b>1955</b><small>Tahun Berdiri</small></div>
-      <div class="stat"><b>7,0%</b><small>Rendemen Gula</small></div>
-      <div class="stat"><b>247</b><small>Jaringan Outlet</small></div>
-      <div class="stat"><b>27 Ha</b><small>Area Pabrik</small></div>
+    <div class="stats-hero">
+      <div class="stat-card"><b>1955</b><small>Tahun Berdiri</small></div>
+      <div class="stat-card"><b>7.0%</b><small>Rendemen Gula</small></div>
+      <div class="stat-card"><b>247</b><small>Jaringan Outlet</small></div>
+      <div class="stat-card"><b>27 Ha</b><small>Area Pabrikasi</small></div>
     </div>
   </div>
 </section>
@@ -242,76 +771,76 @@
 <!-- SLIDE 1: BAB I - PENDAHULUAN -->
 <section id="slide-1" class="slide-section">
   <div class="eyebrow">Bab I · Pendahuluan</div>
-  <h2>Latar Belakang, <span>Tujuan & Manfaat</span></h2>
-  <p class="sub">Tingginya defisit konsumsi gula nasional menuntut efektivitas rantai pasok dan penciptaan nilai tambah agroindustri tebu.</p>
+  <h2>Urgensi Nasional &amp; <span>Kesenjangan Pasokan</span></h2>
+  <p class="sub">Tingginya defisit gula nasional menuntut efektivitas rantai pasok dan optimalisasi agroindustri tebu.</p>
 
   <div class="grid g3">
     <div class="card">
-      <div class="tag">Urgensi Nasional</div>
-      <h3>Defisit Gula 4,83 Juta Ton</h3>
-      <p>Data BPS (2025): Kebutuhan gula nasional mencapai <b>7,51 juta ton</b> (26,67 kg/kapita), sementara produksi domestik hanya <b>2,67 juta ton</b>. Defisit ini ditutup impor raw sugar.</p>
+      <span class="tag">Urgensi GAP Nasional</span>
+      <h3>Defisit 4,83 Juta Ton</h3>
+      <p>Data BPS (2025): Konsumsi gula nasional melonjak ke <b>7,51 juta ton</b> (26,67 kg/kapita), sedangkan produksi dalam negeri hanya mencapai <b>2,67 juta ton</b>. Defisit ditutup melalui impor raw sugar.</p>
     </div>
-    
+
     <div class="card">
-      <div class="tag">Tujuan PKL</div>
-      <h3>4 Fokus Analisis</h3>
+      <span class="tag">4 Tujuan PKL</span>
+      <h3>Fokus Analisis Empiris</h3>
       <ul>
-        <li>Implementasi bauran pemasaran 7P.</li>
-        <li>Pemetaan 2 tipe saluran distribusi.</li>
-        <li>Kalkulasi margin metode Hayami.</li>
-        <li>Formulasi strategi bisnis SWOT.</li>
+        <li>Implementasi Bauran Pemasaran (7P).</li>
+        <li>Pemetaan saluran distribusi (B2B vs B2C).</li>
+        <li>Kalkulasi Nilai Tambah & Margin Hayami.</li>
+        <li>Perumusan Matriks Strategi SWOT.</li>
       </ul>
     </div>
 
     <div class="card">
-      <div class="tag">Manfaat Nyata</div>
-      <h3>Kontribusi 3 Pihak</h3>
+      <span class="tag">Kontribusi 3 Pihak</span>
+      <h3>Manfaat Penelitian</h3>
       <ul>
-        <li><b>Mahasiswa:</b> Validasi teori empiris di industri gula.</li>
-        <li><b>Perusahaan:</b> Rekomendasi mitigasi <i>stock-out</i> ritel.</li>
-        <li><b>Universitas:</b> Penguatan kurikulum kemitraan.</li>
+        <li><b>Mahasiswa:</b> Penguasaan metode Hayami nyata.</li>
+        <li><b>Perusahaan:</b> Solusi pencegah <i>stock-out</i> ritel.</li>
+        <li><b>Universitas:</b> Penguatan materi kurikulum.</li>
       </ul>
     </div>
   </div>
 
-  <div class="chartbox" style="margin-top:16px;">
-    <canvas id="gapChart" height="110"></canvas>
+  <div class="chartbox" style="margin-top:18px;height:220px;">
+    <canvas id="gapChart"></canvas>
   </div>
 </section>
 
 <!-- SLIDE 2: BAB II - TINJAUAN PUSTAKA -->
 <section id="slide-2" class="slide-section">
   <div class="eyebrow">Bab II · Tinjauan Pustaka</div>
-  <h2>Landasan Teori &amp; <span>Kerangka Analisis</span></h2>
-  <p class="sub">Empat pilar metodologi manajemen pemasaran dan ekonomi agroindustri.</p>
+  <h2>Landasan Teori &amp; <span>Kerangka Konseptual</span></h2>
+  <p class="sub">Empat pilar kerangka pemikiran manajemen pemasaran dan analisis efisiensi ekonomi.</p>
 
   <div class="grid g4">
     <div class="card">
-      <div class="tag">Teori 01</div>
+      <span class="tag">Pilar 01</span>
       <h3>Marketing Mix 7P</h3>
       <p>Kotler & Keller: <i>Product, Price, Place, Promotion, People, Process, Physical Evidence</i>.</p>
     </div>
     <div class="card">
-      <div class="tag">Teori 02</div>
+      <span class="tag">Pilar 02</span>
       <h3>Saluran Pemasaran</h3>
-      <p>Pola distribusi langsung (Direct), tidak langsung (Indirect), dan hybrid untuk efisiensi rantai pasok.</p>
+      <p>Saluran langsung (direct), tidak langsung (indirect), dan hybrid untuk menekan risiko peralihan konsumen.</p>
     </div>
     <div class="card">
-      <div class="tag">Teori 03</div>
+      <span class="tag">Pilar 03</span>
       <h3>Metode Hayami</h3>
-      <p>Model pengukur nilai tambah, imbalan tenaga kerja, margin, dan keuntungan perusahaan.</p>
+      <p>Model pengukur pertambahan nilai ekonomi (<i>Form, Time, Place Utility</i>), margin, dan pembagian keuntungan.</p>
     </div>
     <div class="card">
-      <div class="tag">Teori 04</div>
+      <span class="tag">Pilar 04</span>
       <h3>Matriks SWOT</h3>
-      <p>Pemetaan faktor internal (S-W) dan eksternal (O-T) untuk strategi SO, WO, ST, dan WT.</p>
+      <p>Matriks strategi pencocokan faktor internal (S-W) dan eksternal (O-T) menghasilkan strategi SO, WO, ST, WT.</p>
     </div>
   </div>
 
-  <div class="card" style="margin-top:14px;background:#FAFBFC;border-left:4px solid var(--ink);">
-    <h3 style="font-size:13.5px;">Formula Kunci Margin &amp; Nilai Tambah Hayami:</h3>
-    <p style="font-family:monospace;font-size:11.5px;color:var(--ink);margin-top:4px;">
-      <b>MP = Pr - Pf</b> &nbsp;|&nbsp; <b>Nilai Tambah = Nilai Output - Bahan Baku - Input Lain</b>
+  <div class="card" style="margin-top:16px;background:rgba(239,65,54,0.06);border-left:4px solid var(--red);">
+    <h3 style="font-size:14px;">Formula Fundamental Hayami &amp; Margin:</h3>
+    <p style="font-family:var(--font-mono);font-size:12px;color:#fff;margin-top:4px;">
+      <b>Margin Pemasaran (MP) = Pr - Pf</b> &nbsp;|&nbsp; <b>Nilai Tambah (NT) = Nilai Output - Bahan Baku - Input Lain</b>
     </p>
   </div>
 </section>
@@ -319,82 +848,82 @@
 <!-- SLIDE 3: BAB III - METODE PKL -->
 <section id="slide-3" class="slide-section">
   <div class="eyebrow">Bab III · Metode PKL</div>
-  <h2>Waktu, Tempat &amp; <span>Metode Pelaksanaan</span></h2>
-  <p class="sub">Pelaksanaan kegiatan Praktik Kerja Lapangan secara terstruktur di PT Madubaru.</p>
+  <h2>Lokasi, Waktu &amp; <span>Jadwal Pelaksanaan</span></h2>
+  <p class="sub">Pelaksanaan kegiatan Praktik Kerja Lapangan secara komprehensif di PT Madubaru.</p>
 
   <div class="grid g3">
     <div class="card">
-      <div class="tag">Lokasi & Waktu</div>
+      <span class="tag">Lokasi & Waktu</span>
       <h3>PT Madubaru (PG Madukismo)</h3>
-      <p>📍 Jl. Padokan, Kasihan, Kab. Bantul, D.I. Yogyakarta.<br>
-      📅 <b>13 Juli – 12 Agustus 2026</b> (±25 Hari Kerja masa giling aktif).</p>
+      <p>📍 Jl. Padokan, Kasihan, Bantul, D.I. Yogyakarta 55181.<br>
+      📅 <b>13 Juli – 12 Agustus 2026</b> (±25 hari kerja pada masa giling aktif 24 jam).</p>
     </div>
 
     <div class="card">
-      <div class="tag">Metode Pengumpulan Data</div>
-      <h3>Data Primer & Sekunder</h3>
+      <span class="tag">Pengumpulan Data</span>
+      <h3>Primer &amp; Sekunder</h3>
       <ul>
-        <li><b>Primer:</b> Observasi langsung stasiun giling & wawancara tim sales.</li>
-        <li><b>Sekunder:</b> Data lelang, SOP pabrik, laporan BPS, & SNI 3140-3:2020.</li>
+        <li><b>Primer:</b> Observasi langsung stasiun giling & wawancara mendalam staf pemasaran.</li>
+        <li><b>Sekunder:</b> Data lelang mingguan, SNI 3140-3:2020, publikasi BPS 2025.</li>
       </ul>
     </div>
 
     <div class="card">
-      <div class="tag">Ruang Lingkup</div>
-      <h3>5 Fokus Kajian</h3>
+      <span class="tag">Materi Kajian</span>
+      <h3>5 Aspek Utama</h3>
       <ul>
-        <li>Profil alur 7 stasiun giling.</li>
-        <li>Bauran 7P curah vs ritel.</li>
-        <li>Sebaran 247 outlet ritel.</li>
+        <li>Alur 7 stasiun pabrikasi tebu.</li>
+        <li>Bauran 7P produk curah vs ritel.</li>
+        <li>Jaringan 247 outlet ritel.</li>
         <li>Simulasi margin Hayami I & II.</li>
       </ul>
     </div>
   </div>
 
-  <div class="table-responsive">
-    <table class="timeline-table">
+  <div class="table-wrap" style="margin-top:16px;">
+    <table class="dark-table">
       <thead>
         <tr>
-          <th style="width:40px;">No</th>
-          <th>Jenis Kegiatan PKL</th>
-          <th class="center">Minggu 1</th>
-          <th class="center">Minggu 2</th>
-          <th class="center">Minggu 3</th>
-          <th class="center">Minggu 4</th>
+          <th style="width:50px;">No</th>
+          <th>Tahapan Rencana Kerja PKL (4 Minggu)</th>
+          <th style="text-align:center;">M-1</th>
+          <th style="text-align:center;">M-2</th>
+          <th style="text-align:center;">M-3</th>
+          <th style="text-align:center;">M-4</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td class="center">1</td>
-          <td>Orientasi pabrik, struktur organisasi, dan pengamatan stasiun giling.</td>
-          <td class="center"><span class="badge-week">Aktif</span></td>
-          <td class="center">-</td>
-          <td class="center">-</td>
-          <td class="center">-</td>
+          <td>1</td>
+          <td>Orientasi pabrik, pengenalan sistem kerja & pengamatan stasiun gilingan</td>
+          <td style="text-align:center;"><span class="tag-active">Aktif</span></td>
+          <td style="text-align:center;">-</td>
+          <td style="text-align:center;">-</td>
+          <td style="text-align:center;">-</td>
         </tr>
         <tr>
-          <td class="center">2</td>
-          <td>Observasi bauran 7P dan pemetaan jaringan outlet distribusi ritel.</td>
-          <td class="center">-</td>
-          <td class="center"><span class="badge-week">Aktif</span></td>
-          <td class="center">-</td>
-          <td class="center">-</td>
+          <td>2</td>
+          <td>Observasi bauran 7P dan pemetaan jaringan outlet distribusi ritel</td>
+          <td style="text-align:center;">-</td>
+          <td style="text-align:center;"><span class="tag-active">Aktif</span></td>
+          <td style="text-align:center;">-</td>
+          <td style="text-align:center;">-</td>
         </tr>
         <tr>
-          <td class="center">3</td>
-          <td>Pengumpulan data lelang, input biaya Hayami, dan analisis SWOT.</td>
-          <td class="center">-</td>
-          <td class="center">-</td>
-          <td class="center"><span class="badge-week">Aktif</span></td>
-          <td class="center">-</td>
+          <td>3</td>
+          <td>Pengumpulan data lelang, input biaya Hayami & perumusan Matriks SWOT</td>
+          <td style="text-align:center;">-</td>
+          <td style="text-align:center;">-</td>
+          <td style="text-align:center;"><span class="tag-active">Aktif</span></td>
+          <td style="text-align:center;">-</td>
         </tr>
         <tr>
-          <td class="center">4</td>
-          <td>Rekapitulasi data akhir dan penyusunan draf rekomendasi manajerial.</td>
-          <td class="center">-</td>
-          <td class="center">-</td>
-          <td class="center">-</td>
-          <td class="center"><span class="badge-week">Aktif</span></td>
+          <td>4</td>
+          <td>Rekapitulasi data akhir & penyusunan draf rekomendasi strategi manajerial</td>
+          <td style="text-align:center;">-</td>
+          <td style="text-align:center;">-</td>
+          <td style="text-align:center;">-</td>
+          <td style="text-align:center;"><span class="tag-active">Aktif</span></td>
         </tr>
       </tbody>
     </table>
@@ -404,153 +933,149 @@
 <!-- SLIDE 4: BAB IV - PABRIKASI & 7P -->
 <section id="slide-4" class="slide-section">
   <div class="eyebrow">Bab IV · Hasil & Pembahasan (1)</div>
-  <h2>Alur Pabrikasi &amp; <span>Bauran Pemasaran (7P)</span></h2>
-  <p class="sub">Transformasi 7 stasiun produksi dan struktur penjualan tahun 2025.</p>
+  <h2>7 Stasiun Pabrikasi &amp; <span>Kinerja Penjualan 2025</span></h2>
+  <p class="sub">Transformasi tebu melalui 7 stasiun giling dan dominasi B2B pada struktur pendapatan Rp280,51 Miliar.</p>
 
-  <div class="flow-grid">
-    <div class="flow-step"><b>01. Persiapan</b><p>Unigrator</p><small>Cacah tebu</small></div>
-    <div class="flow-step"><b>02. Gilingan</b><p>5 Unit Seri</p><small>Perah nira</small></div>
-    <div class="flow-step"><b>03. Pemurnian</b><p>Sulfitasi</p><small>Kapur + SO₂</small></div>
-    <div class="flow-step"><b>04. Penguapan</b><p>Evaporator</p><small>15°➔60°Brix</small></div>
-    <div class="flow-step"><b>05. Masakan</b><p>Sistem ACD</p><small>Kristalisasi</small></div>
-    <div class="flow-step"><b>06. Putaran</b><p>Sentrifugal</p><small>Pisah tetes</small></div>
-    <div class="flow-step"><b>07. Selesai</b><p>Packaging</p><small>50kg & 1kg</small></div>
+  <div class="pipeline-grid">
+    <div class="station-node"><span class="num">01</span><h4>Persiapan</h4><span>Crane & Unigrator</span></div>
+    <div class="station-node"><span class="num">02</span><h4>Gilingan</h4><span>5 Unit Seri (NPP)</span></div>
+    <div class="station-node"><span class="num">03</span><h4>Pemurnian</h4><span>Defekasi & Sulfitasi</span></div>
+    <div class="station-node"><span class="num">04</span><h4>Penguapan</h4><span>15°➔60° Brix</span></div>
+    <div class="station-node"><span class="num">05</span><h4>Masakan</h4><span>Sistem ACD Pan</span></div>
+    <div class="station-node"><span class="num">06</span><h4>Putaran</h4><span>Sentrifugasi SHS</span></div>
+    <div class="station-node"><span class="num">07</span><h4>Penyelesaian</h4><span>Pack 50kg & 1kg</span></div>
   </div>
 
   <div class="grid g2" style="margin-top:16px;">
-    <div class="chartbox"><canvas id="revChart" height="130"></canvas></div>
-    <div class="chartbox"><canvas id="distChart" height="130"></canvas></div>
+    <div class="chartbox" style="height:220px;"><canvas id="revChart"></canvas></div>
+    <div class="chartbox" style="height:220px;"><canvas id="distChart"></canvas></div>
   </div>
 </section>
 
-<!-- SLIDE 5: BAB IV - HAYAMI & KALKULATOR -->
+<!-- SLIDE 5: BAB IV - HAYAMI SIMULATOR 2.0 -->
 <section id="slide-5" class="slide-section">
   <div class="eyebrow">Bab IV · Hasil & Pembahasan (2)</div>
-  <h2>Nilai Tambah Hayami &amp; <span>Kalkulator Live</span></h2>
-  <p class="sub">Simulasi real-time komparasi nilai tambah pengolahan gula curah vs repackaging ritel 1 kg.</p>
-  
-  <div class="calc-preset-bar">
-    <button class="btn-preset active" id="btnPreset1" onclick="applyPreset(1)">🔘 Preset: Tahap I (Gula Curah 50 kg)</button>
-    <button class="btn-preset" id="btnPreset2" onclick="applyPreset(2)">🔘 Preset: Tahap II (Gula Ritel 1 kg)</button>
+  <h2>Nilai Tambah Hayami <span>Simulator 2.0</span></h2>
+  <p class="sub">Simulasi real-time komparasi nilai tambah pengolahan curah 50 kg vs repackaging ritel 1 kg.</p>
+
+  <div class="preset-bar">
+    <button class="btn-preset active" id="preset1" onclick="loadPreset(1)">🔘 Tahap I: Gula Curah 50 kg</button>
+    <button class="btn-preset" id="preset2" onclick="loadPreset(2)">🔘 Tahap II: Gula Ritel 1 kg (Repackaging)</button>
   </div>
 
-  <div class="calc">
+  <div class="calc-grid">
     <div class="card">
-      <label>Kapasitas Output (Kg)</label><input type="number" id="i_output" value="250000">
-      <label>Input Bahan Baku Tebu (Kg)</label><input type="number" id="i_input" value="3500000">
-      <label>Tenaga Kerja Langsung (HOK)</label><input type="number" id="i_labor" value="1279">
-      <label>Upah Rata-rata (Rp/HOK)</label><input type="number" id="i_wage" value="100000">
-      <label>Harga Bahan Baku Tebu (Rp/Kg)</label><input type="number" id="i_raw" value="684.18" step="0.01">
-      <label>Sumbangan Input Lain (Rp/Kg)</label><input type="number" id="i_other" value="85.71" step="0.01">
-      <label>Harga Output Gula (Rp/Kg)</label><input type="number" id="i_price" value="14513">
-      <button class="btn-calc" onclick="calculateHayami()">⚡ Hitung Nilai Tambah</button>
+      <div class="calc-input-group">
+        <div class="calc-field"><label>Output (Kg)</label><input type="number" id="in_out" value="250000" oninput="runHayamiCalc()"></div>
+        <div class="calc-field"><label>Input Baku (Kg)</label><input type="number" id="in_in" value="3500000" oninput="runHayamiCalc()"></div>
+        <div class="calc-field"><label>Tenaga Kerja (HOK)</label><input type="number" id="in_tkl" value="1279" oninput="runHayamiCalc()"></div>
+        <div class="calc-field"><label>Upah (Rp/HOK)</label><input type="number" id="in_wage" value="100000" oninput="runHayamiCalc()"></div>
+        <div class="calc-field"><label>Harga Baku (Rp/Kg)</label><input type="number" id="in_raw" value="684.18" step="0.01" oninput="runHayamiCalc()"></div>
+        <div class="calc-field"><label>Input Lain (Rp/Kg)</label><input type="number" id="in_oth" value="85.71" step="0.01" oninput="runHayamiCalc()"></div>
+      </div>
+      <div class="calc-field" style="margin-top:10px;"><label>Harga Output Gula (Rp/Kg)</label><input type="number" id="in_price" value="14513" oninput="runHayamiCalc()"></div>
     </div>
-    <div class="result" id="calcResult">
-      <div style="opacity:.7;font-size:11.5px;">Estimasi Nilai Tambah</div>
-      <div class="big" id="res_va">Rp266,75 / kg</div>
-      <div class="row"><span>Faktor Konversi (Rendemen)</span><b id="res_cf">0.07143</b></div>
-      <div class="row"><span>Nilai Output</span><b id="res_vo">Rp1.036,64</b></div>
-      <div class="row"><span>Rasio Nilai Tambah</span><b id="res_var">25.73%</b></div>
-      <div class="row"><span>Pendapatan Tenaga Kerja</span><b id="res_inc">Rp36,54 / kg (13.70%)</b></div>
-      <div class="row"><span>Keuntungan Perusahaan</span><b id="res_prof">Rp230,21 / kg (86.30%)</b></div>
-      <div class="row"><span>Marjin Pemasaran</span><b id="res_mar">Rp352,46 / kg</b></div>
+
+    <div class="calc-result-box">
+      <div>
+        <div class="va-badge">Hasil Nilai Tambah (Value Added)</div>
+        <div class="va-value" id="res_va">Rp 266,75 / kg</div>
+      </div>
+      <div>
+        <div class="res-metric"><span>Faktor Konversi (Rendemen)</span><b id="res_cf">0.07143</b></div>
+        <div class="res-metric"><span>Nilai Output</span><b id="res_vo">Rp 1.036,64</b></div>
+        <div class="res-metric"><span>Rasio Nilai Tambah</span><b id="res_var" style="color:var(--yellow);">25.73%</b></div>
+        <div class="res-metric"><span>Imbalan Tenaga Kerja</span><b id="res_inc">Rp 36,54 (13.70%)</b></div>
+        <div class="res-metric"><span>Keuntungan Perusahaan</span><b id="res_prof" style="color:var(--green);">Rp 230,21 (86.30%)</b></div>
+        <div class="res-metric"><span>Marjin Pemasaran</span><b id="res_mar">Rp 352,46 / kg</b></div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- SLIDE 6: BAB IV - MATRIKS SWOT -->
+<!-- SLIDE 6: BAB IV - SWOT -->
 <section id="slide-6" class="slide-section">
   <div class="eyebrow">Bab IV · Hasil & Pembahasan (3)</div>
   <h2>Matriks SWOT &amp; <span>Formulasi Strategi</span></h2>
-  <p class="sub">Rekomendasi taktis berbasis analisis faktor internal dan eksternal PG Madukismo.</p>
+  <p class="sub">Strategi taktis memaksimalkan kekuatan internal dan memanfaatkan peluang defisit gula.</p>
 
-  <div class="swot">
-    <div class="box s"><h4>Strengths (Kekuatan)</h4>
+  <div class="swot-grid">
+    <div class="swot-card s">
+      <h4><span>●</span> Strengths (Kekuatan)</h4>
       <ul>
-        <li>Brand awareness MK di DIY & Jateng tinggi</li>
-        <li>Mutu terjamin SNI 3140-3:2020 & Halal</li>
-        <li>Sistem pabrikasi curah & ritel terpadu</li>
-        <li>Nilai tambah ritel tinggi (Rp1.641/kg)</li>
+        <li>Brand awareness MK di DIY & Jateng sangat kuat.</li>
+        <li>Mutu terjamin standar SNI 3140-3:2020 & Halal.</li>
+        <li>Nilai tambah gula ritel tinggi (Rp1.641,00/kg).</li>
+        <li>Kemitraan petani stabil di 17 kabupaten.</li>
       </ul>
     </div>
-    <div class="box w"><h4>Weaknesses (Kelemahan)</h4>
+    <div class="swot-card w">
+      <h4><span>●</span> Weaknesses (Kelemahan)</h4>
       <ul>
-        <li>Alokasi ritel 1 kg rendah (0,56% output)</li>
-        <li>Ketergantungan B2B curah tinggi (99,44%)</li>
-        <li>Pemasaran digital belum optimal</li>
+        <li>Porsi ritel 1 kg baru 0,56% (Ketergantungan B2B curah 99,44%).</li>
+        <li>Pemasaran dan promosi online belum tergarap optimal.</li>
+        <li>Keterbatasan pasokan ritel pada awal tahun (<i>off-season</i>).</li>
       </ul>
     </div>
-    <div class="box o"><h4>Opportunities (Peluang)</h4>
+    <div class="swot-card o">
+      <h4><span>●</span> Opportunities (Peluang)</h4>
       <ul>
-        <li>Tren kesadaran masyarakat pada gula murni</li>
-        <li>Defisit pasokan membuka ruang ekspansi</li>
+        <li>Tren kesadaran masyarakat pada gula higienis murni.</li>
+        <li>Defisit 4,83 juta ton membuka peluang penetrasi ritel modern.</li>
       </ul>
     </div>
-    <div class="box t"><h4>Threats (Ancaman)</h4>
+    <div class="swot-card t">
+      <h4><span>●</span> Threats (Ancaman)</h4>
       <ul>
-        <li>Kompetitor merek mapan (Gulaku, Rose Brand)</li>
-        <li>Tingginya ongkos kirim ekspedisi online</li>
+        <li>Kompetisi agresif merek nasional (Gulaku, Rose Brand).</li>
+        <li>Tingginya ongkos kirim logistik penjualan e-commerce.</li>
       </ul>
     </div>
   </div>
 
-  <div class="matrix-grid">
-    <div class="m-box">
-      <h5>Strategi SO</h5>
-      <ul>
-        <li>Optimalkan kuota 50 kg ke industri mamin untuk arus kas.</li>
-        <li>Puncak giling (Jun-Agu) untuk memacu volume ritel 1 kg.</li>
-      </ul>
+  <div class="grid g2" style="margin-top:14px;">
+    <div class="matrix-box">
+      <h5>Strategi SO &amp; WO</h5>
+      <p style="font-size:12px;color:var(--text-muted);">
+        <b>SO:</b> Maksimalkan puncak giling (Jun-Agu) untuk memacu kuota ritel 1 kg.<br>
+        <b>WO:</b> Susun manajemen <i>safety stock</i> preventif agar ritel modern bebas <i>stock-out</i>.
+      </p>
     </div>
-    <div class="m-box">
-      <h5>Strategi WO</h5>
-      <ul>
-        <li>Manajemen rantai pasok preventif cegah <i>stock-out</i> ritel.</li>
-        <li>Insentif kemitraan petani amankan pasokan tebu.</li>
-      </ul>
-    </div>
-    <div class="m-box">
-      <h5>Strategi ST</h5>
-      <ul>
-        <li>Perkuat branding lokal tahan substitusi merek nasional.</li>
-        <li>Bundling produk dan delivery armada mandiri.</li>
-      </ul>
-    </div>
-    <div class="m-box">
-      <h5>Strategi WT</h5>
-      <ul>
-        <li>Upskilling SDM digital marketing & logistik.</li>
-        <li>Efisiensi kemasan hadapi regulasi HET.</li>
-      </ul>
+    <div class="matrix-box">
+      <h5>Strategi ST &amp; WT</h5>
+      <p style="font-size:12px;color:var(--text-muted);">
+        <b>ST:</b> Bundling produk & armada mandiri tekan ongkir e-commerce.<br>
+        <b>WT:</b> Upskilling SDM operasional dan pemasaran digital menghadapi regulasi HET.
+      </p>
     </div>
   </div>
 </section>
 
-<!-- SLIDE 7: BAB V - KESIMPULAN & SARAN -->
+<!-- SLIDE 7: BAB V - PENUTUP -->
 <section id="slide-7" class="slide-section">
   <div class="eyebrow">Bab V · Penutup</div>
-  <h2>Kesimpulan &amp; <span>Saran Aplikatif</span></h2>
-  <p class="sub">Intisari kajian Praktik Kerja Lapangan dan rekomendasi pengembangan.</p>
+  <h2>Kesimpulan &amp; <span>Rekomendasi Aplikatif</span></h2>
+  <p class="sub">Intisari kajian Praktik Kerja Lapangan dan saran strategis bagi para pemangku kepentingan.</p>
 
   <div class="grid g2">
-    <div class="card" style="border-top:4px solid var(--ink);">
-      <div class="tag">Kesimpulan Utama</div>
-      <h3>4 Poin Kesimpulan</h3>
+    <div class="card" style="border-top:3px solid var(--blue);">
+      <span class="tag">Kesimpulan Utama</span>
+      <h3>4 Kesimpulan Kajian</h3>
       <ul>
-        <li><b>7P:</b> Integrasi diferensiasi produk curah 50 kg dan ritel 1 kg MK Istimewa.</li>
-        <li><b>Saluran:</b> Jaringan multi-channel di 247 outlet (Jateng, DIY, Jabar, Jatim).</li>
-        <li><b>Hayami:</b> Nilai tambah melonjak drastis dari Rp266,75/kg (Curah) menjadi Rp1.641,00/kg (Ritel 1 kg).</li>
-        <li><b>SWOT:</b> Prioritas pada ekspansi ritel modern dan efisiensi logistik.</li>
+        <li><b>7P:</b> Integrasi bauran pemasaran berbasis diferensiasi B2B curah 50 kg dan B2C ritel 1 kg MK Istimewa.</li>
+        <li><b>Saluran:</b> Multi-channel network melayani 247 outlet lintas provinsi.</li>
+        <li><b>Hayami:</b> Nilai tambah melonjak drastis dari Rp266,75/kg (Curah) menjadi **Rp1.641,00/kg (Ritel 1 kg)**.</li>
+        <li><b>SWOT:</b> Rekomendasi utama ekspansi porsi ritel dan manajemen rantai pasok anti stock-out.</li>
       </ul>
     </div>
 
-    <div class="card" style="border-top:4px solid var(--red);">
-      <div class="tag">Saran Aplikatif</div>
+    <div class="card" style="border-top:3px solid var(--red);">
+      <span class="tag">Saran Aplikatif</span>
       <h3>Rekomendasi 3 Pihak</h3>
       <ul>
-        <li><b>PT Madubaru:</b> Membangun <i>safety stock</i> ritel saat masa giling agar tidak <i>stock-out</i> di supermarket.</li>
-        <li><b>Petani Mitra:</b> Penerapan <i>Good Agricultural Practices</i> (GAP) dongkrak rendemen >7%.</li>
-        <li><b>Peneliti:</b> Analisis kuantitatif <i>farmer's share</i> dan produk sampingan (molase, blotong).</li>
+        <li><b>PT Madubaru:</b> Bangun sistem <i>safety stock</i> ritel di masa giling dan bundling kemasan 5-10 kg.</li>
+        <li><b>Petani Mitra:</b> Terapkan <i>Good Agricultural Practices</i> (GAP) dongkrak rendemen tebu >7%.</li>
+        <li><b>Peneliti Lanjutan:</b> Analisis kuantitatif <i>farmer's share</i> dan valuasi produk sampingan (molase, blotong).</li>
       </ul>
     </div>
   </div>
@@ -561,86 +1086,98 @@
   Fakultas Pertanian · Universitas Jenderal Soedirman
 </footer>
 
-<!-- PRESENTER HUD (FLOATING) -->
+<!-- FLOATING PRESENTER HUD -->
 <div id="presenterHUD">
-  <button class="hud-btn" onclick="prevSlide()" title="Slide Sebelumnya">❮</button>
-  <div class="hud-slide-info" id="hudSlideText">Slide 0 / 7</div>
-  <button class="hud-btn" onclick="nextSlide()" title="Slide Selanjutnya">❯</button>
+  <button class="hud-btn" onclick="prevSlide()" title="Slide Sebelumnya (Panah Kiri)">❮</button>
+  <div class="hud-info" id="hudSlideText">SLIDE 0 / 7</div>
+  <button class="hud-btn" onclick="nextSlide()" title="Slide Selanjutnya (Panah Kanan / Spasi)">❯</button>
   
-  <div class="hud-timer running" id="hudTimerBadge" title="Klik tombol untuk Pause/Play Timer (Shortcut: Huruf 'P')">
+  <div class="hud-timer running" id="hudTimerBadge" title="Klik untuk Pause/Play Timer (Shortcut: 'P')">
     <button class="hud-timer-btn" id="btnTimerToggle" onclick="toggleTimer()">⏸️</button>
     <span id="timerText">00:00</span>
   </div>
 
+  <button class="hud-btn" id="btnLaser" onclick="toggleLaser()" title="Laser Pointer Tool (Shortcut: 'L')">🔴</button>
   <button class="hud-exit" onclick="exitPresentationMode()">Keluar (Esc)</button>
 </div>
 
 <script>
 const rp = n => 'Rp ' + Number(n).toLocaleString('id-ID', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
-// Toggle Menu Mobile
-function toggleMobileMenu(){
-  document.getElementById('navMenu').classList.toggle('show');
-}
+// Charts Defaults
+Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
+Chart.defaults.color = '#9CA3AF';
 
-// Inisialisasi Charts dengan Konfigurasi Responsif
-Chart.defaults.font.family = "'Inter', sans-serif";
-Chart.defaults.color = '#6B7280';
-
+// GAP CHART
 new Chart(document.getElementById('gapChart'), {
   type: 'bar',
   data: {
-    labels: ['Konsumsi 2025', 'Produksi Riil', 'Defisit (Impor)'],
+    labels: ['Konsumsi Nasional 2025', 'Produksi Riil Domestik', 'Defisit Nasional (Impor)'],
     datasets: [{
       data: [7512726, 2670000, 4830000],
-      backgroundColor: ['#2F3142', '#22A06B', '#EF4136'],
-      borderRadius: 6
+      backgroundColor: ['#3B82F6', '#10B981', '#EF4136'],
+      borderRadius: 8
     }]
   },
-  options: { 
-    responsive: true, 
+  options: {
+    responsive: true,
     maintainAspectRatio: false,
-    plugins: { legend: { display: false } }, 
-    scales: { y: { ticks: { callback: v => (v / 1000000).toFixed(1) + ' Jt Ton' } } } 
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { callback: v => (v/1000000).toFixed(1) + ' Jt Ton' } },
+      x: { grid: { display: false } }
+    }
   }
 });
 
+// REVENUE CHART
 new Chart(document.getElementById('revChart'), {
   type: 'doughnut',
   data: {
-    labels: ['Curah 50 kg (99,35%)', 'Ritel 1 kg (0,65%)'],
-    datasets: [{ data: [278700790200, 1810342500], backgroundColor: ['#EF4136', '#2F3142'], hoverOffset: 4 }]
+    labels: ['Gula Curah 50kg (99.35%)', 'Gula Ritel 1kg (0.65%)'],
+    datasets: [{ data: [278700790200, 1810342500], backgroundColor: ['#EF4136', '#3B82F6'], borderWidth: 0, hoverOffset: 6 }]
   },
-  options: { 
+  options: {
     responsive: true,
     maintainAspectRatio: false,
-    plugins: { title: { display: true, text: 'Porsi Pendapatan 2025', font: { weight: 'bold', size: 12 } }, legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 11 } } } } 
+    plugins: {
+      title: { display: true, text: 'Pangsa Pendapatan 2025 (Total Rp280,51 M)', color: '#fff', font: { size: 12, weight: 'bold' } },
+      legend: { position: 'bottom', labels: { boxWidth: 10, color: '#9CA3AF' } }
+    }
   }
 });
 
+// DISTRIBUTION CHART
 new Chart(document.getElementById('distChart'), {
   type: 'bar',
   data: {
     labels: ['DIY & Jateng', 'DKI & Jabar', 'Jatim'],
-    datasets: [{ data: [241, 4, 2], backgroundColor: '#EF4136', borderRadius: 4 }]
+    datasets: [{ data: [241, 4, 2], backgroundColor: '#EF4136', borderRadius: 6 }]
   },
-  options: { 
+  options: {
     responsive: true,
     maintainAspectRatio: false,
-    indexAxis: 'y', 
-    plugins: { title: { display: true, text: 'Sebaran 247 Outlet', font: { weight: 'bold', size: 12 } }, legend: { display: false } } 
+    indexAxis: 'y',
+    plugins: {
+      title: { display: true, text: 'Sebaran 247 Outlet Distribusi', color: '#fff', font: { size: 12, weight: 'bold' } },
+      legend: { display: false }
+    },
+    scales: {
+      x: { grid: { color: 'rgba(255,255,255,0.05)' } },
+      y: { grid: { display: false } }
+    }
   }
 });
 
-// Kalkulator Hayami
-function calculateHayami() {
-  const output = parseFloat(document.getElementById('i_output').value) || 0;
-  const input = parseFloat(document.getElementById('i_input').value) || 1;
-  const labor = parseFloat(document.getElementById('i_labor').value) || 0;
-  const wage = parseFloat(document.getElementById('i_wage').value) || 0;
-  const rawPrice = parseFloat(document.getElementById('i_raw').value) || 0;
-  const otherInputs = parseFloat(document.getElementById('i_other').value) || 0;
-  const outputPrice = parseFloat(document.getElementById('i_price').value) || 0;
+// HAYAMI CALCULATOR ENGINE
+function runHayamiCalc() {
+  const output = parseFloat(document.getElementById('in_out').value) || 0;
+  const input = parseFloat(document.getElementById('in_in').value) || 1;
+  const labor = parseFloat(document.getElementById('in_tkl').value) || 0;
+  const wage = parseFloat(document.getElementById('in_wage').value) || 0;
+  const rawPrice = parseFloat(document.getElementById('in_raw').value) || 0;
+  const otherInputs = parseFloat(document.getElementById('in_oth').value) || 0;
+  const outputPrice = parseFloat(document.getElementById('in_price').value) || 0;
 
   const cf = output / input;
   const laborCoef = labor / input;
@@ -662,44 +1199,46 @@ function calculateHayami() {
   document.getElementById('res_mar').innerText = rp(margin) + ' / kg';
 }
 
-function applyPreset(stage) {
-  document.getElementById('btnPreset1').classList.toggle('active', stage === 1);
-  document.getElementById('btnPreset2').classList.toggle('active', stage === 2);
+function loadPreset(stage) {
+  document.getElementById('preset1').classList.toggle('active', stage === 1);
+  document.getElementById('preset2').classList.toggle('active', stage === 2);
 
   if (stage === 1) {
-    document.getElementById('i_output').value = 250000;
-    document.getElementById('i_input').value = 3500000;
-    document.getElementById('i_labor').value = 1279;
-    document.getElementById('i_wage').value = 100000;
-    document.getElementById('i_raw').value = 684.18;
-    document.getElementById('i_other').value = 85.71;
-    document.getElementById('i_price').value = 14513;
+    document.getElementById('in_out').value = 250000;
+    document.getElementById('in_in').value = 3500000;
+    document.getElementById('in_tkl').value = 1279;
+    document.getElementById('in_wage').value = 100000;
+    document.getElementById('in_raw').value = 684.18;
+    document.getElementById('in_oth').value = 85.71;
+    document.getElementById('in_price').value = 14513;
   } else {
-    document.getElementById('i_output').value = 1408;
-    document.getElementById('i_input').value = 1408;
-    document.getElementById('i_labor').value = 10;
-    document.getElementById('i_wage').value = 100000;
-    document.getElementById('i_raw').value = 14513;
-    document.getElementById('i_other').value = 500;
-    document.getElementById('i_price').value = 16654;
+    document.getElementById('in_out').value = 1408;
+    document.getElementById('in_in').value = 1408;
+    document.getElementById('in_tkl').value = 10;
+    document.getElementById('in_wage').value = 100000;
+    document.getElementById('in_raw').value = 14513;
+    document.getElementById('in_oth').value = 500;
+    document.getElementById('in_price').value = 16654;
   }
-  calculateHayami();
+  runHayamiCalc();
 }
 
-// Controller Presentasi & Timer
+// PRESENTATION CONTROLLER & LASER
 let currentSlide = 0;
 const totalSlides = 7;
 let timerInterval = null;
 let secondsElapsed = 0;
 let isPresenting = false;
 let isTimerRunning = false;
+let isLaserActive = false;
 
 function updateSlideView() {
   const target = document.getElementById(`slide-${currentSlide}`);
   if (target) {
     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
-  document.getElementById('hudSlideText').innerText = `Slide ${currentSlide} / ${totalSlides}`;
+  document.getElementById('hudSlideText').innerText = `SLIDE ${currentSlide} / ${totalSlides}`;
+  document.getElementById('slideProgressBar').style.width = `${(currentSlide / totalSlides) * 100}%`;
 }
 
 function nextSlide() {
@@ -725,9 +1264,9 @@ function updateTimerDisplay() {
   if (secondsElapsed >= 600) {
     timerElem.style.color = '#EF4136';
   } else if (!isTimerRunning) {
-    timerElem.style.color = '#FBBF24';
+    timerElem.style.color = 'var(--yellow)';
   } else {
-    timerElem.style.color = '#4ADE80';
+    timerElem.style.color = 'var(--green)';
   }
 }
 
@@ -757,21 +1296,33 @@ function pauseTimer() {
 }
 
 function toggleTimer() {
-  if (isTimerRunning) {
-    pauseTimer();
-  } else {
-    runTimer();
-  }
+  if (isTimerRunning) pauseTimer();
+  else runTimer();
 }
+
+function toggleLaser() {
+  isLaserActive = !isLaserActive;
+  const laser = document.getElementById('laserPointer');
+  const btn = document.getElementById('btnLaser');
+  btn.classList.toggle('active', isLaserActive);
+  laser.style.display = isLaserActive ? 'block' : 'none';
+  document.body.style.cursor = isLaserActive ? 'none' : 'default';
+}
+
+document.addEventListener('mousemove', (e) => {
+  if (isLaserActive) {
+    const laser = document.getElementById('laserPointer');
+    laser.style.left = e.clientX + 'px';
+    laser.style.top = e.clientY + 'px';
+  }
+});
 
 function startPresentationMode() {
   isPresenting = true;
   document.getElementById('presenterHUD').classList.add('active');
-  
   if (document.documentElement.requestFullscreen) {
     document.documentElement.requestFullscreen().catch(err => console.log(err));
   }
-
   secondsElapsed = 0;
   runTimer();
   currentSlide = 0;
@@ -782,16 +1333,28 @@ function exitPresentationMode() {
   isPresenting = false;
   document.getElementById('presenterHUD').classList.remove('active');
   pauseTimer();
+  if (isLaserActive) toggleLaser();
   if (document.exitFullscreen && document.fullscreenElement) {
     document.exitFullscreen().catch(err => console.log(err));
   }
 }
 
+function toggleNav() {
+  document.getElementById('navLinks').classList.toggle('mobile-open');
+}
+function closeNav() {
+  document.getElementById('navLinks').classList.remove('mobile-open');
+}
+
+// KEYBOARD SHORTCUTS
 document.addEventListener('keydown', (e) => {
   if (!isPresenting) return;
   if (e.key === 'p' || e.key === 'P') {
     e.preventDefault();
     toggleTimer();
+  } else if (e.key === 'l' || e.key === 'L') {
+    e.preventDefault();
+    toggleLaser();
   } else if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
     e.preventDefault();
     nextSlide();
@@ -802,6 +1365,24 @@ document.addEventListener('keydown', (e) => {
     exitPresentationMode();
   }
 });
+
+// TOUCH SWIPE DETECTION FOR PHONES
+let touchStartX = 0;
+let touchEndX = 0;
+
+document.addEventListener('touchstart', e => {
+  touchStartX = e.changedTouches[0].screenX;
+}, false);
+
+document.addEventListener('touchend', e => {
+  touchEndX = e.changedTouches[0].screenX;
+  handleSwipe();
+}, false);
+
+function handleSwipe() {
+  if (touchEndX < touchStartX - 60) nextSlide();
+  if (touchEndX > touchStartX + 60) prevSlide();
+}
 </script>
 </body>
 </html>
